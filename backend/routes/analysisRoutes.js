@@ -39,6 +39,8 @@ const upload = multer({
 
 // Routes
 router.post('/analyze-cv', upload.single('cv'), analysisController.analyzeCVWithZip.bind(analysisController))
+router.post('/analyze-only', upload.single('cv'), analysisController.analyzeOnly.bind(analysisController))
+router.post('/improve-only', upload.single('cv'), analysisController.improveOnly.bind(analysisController))
 
 export default router
 

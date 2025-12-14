@@ -14,7 +14,9 @@
       <div class="container">
         <div class="form-container">
           <h2 class="form-title">Get Your CV Analysis</h2>
-          <form @submit.prevent="handleSubmit" class="cv-form">
+          
+          <!-- Step 1: Upload and Basic Info -->
+          <div v-if="currentStep === 1" class="cv-form">
             <div class="form-group">
               <label for="cv-file" class="form-label">
                 Upload Your CV/Resume
@@ -35,50 +37,129 @@
             </div>
 
             <div class="form-group">
+              <label for="role" class="form-label">
+                Role
+                <span class="required">*</span>
+              </label>
+              <input
+                id="role"
+                v-model="role"
+                type="text"
+                placeholder="e.g., Software Engineer, Product Manager"
+                required
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
               <label for="job-description" class="form-label">
                 Job Description
-                <span class="required">*</span>
               </label>
               <textarea
                 id="job-description"
                 v-model="jobDescription"
                 rows="8"
-                placeholder="Paste the job description here..."
-                required
+                placeholder="Paste the job description here (optional)..."
                 class="form-textarea"
               ></textarea>
             </div>
 
-            <!-- Email field commented out - not required for direct download -->
-            <!-- <div class="form-group">
-              <label for="email" class="form-label">
-                Email Address
-                <span class="required">*</span>
-              </label>
-              <input
-                id="email"
-                v-model="email"
-                type="email"
-                placeholder="your.email@example.com"
-                required
-                class="form-input"
-              />
-              <small class="form-hint">We'll send your analysis report to this email</small>
-            </div> -->
-
             <button
-              type="submit"
-              :disabled="isLoading || !isFormValid"
+              type="button"
+              @click="goToNextStep"
+              :disabled="!isStep1Valid"
               class="cta-button"
             >
-              <span v-if="isLoading">Processing...</span>
-              <span v-else>Get Analysis & Your Improved CV</span>
+              Next
             </button>
 
             <div v-if="error" class="error-message">
               {{ error }}
             </div>
-          </form>
+          </div>
+
+          <!-- Step 2: Choose Service Option -->
+          <div v-if="currentStep === 2" class="pricing-step">
+            <h3 class="pricing-title">Choose Your Service</h3>
+            <div class="pricing-options">
+              <div 
+                class="pricing-card"
+                :class="{ selected: selectedOption === 'analysis' }"
+                @click="selectOption('analysis')"
+              >
+                <div class="pricing-header">
+                  <h4>Analysis Only</h4>
+                  <div class="price">$5</div>
+                </div>
+                <p class="pricing-description">Get detailed CV analysis report</p>
+                <ul class="pricing-features">
+                  <li>✓ Match Score</li>
+                  <li>✓ Missing Keywords</li>
+                  <li>✓ Actionable Recommendations</li>
+                </ul>
+              </div>
+
+              <div 
+                class="pricing-card"
+                :class="{ selected: selectedOption === 'improved' }"
+                @click="selectOption('improved')"
+              >
+                <div class="popular-badge">Most Popular</div>
+                <div class="pricing-header">
+                  <h4>Improved CV</h4>
+                  <div class="price">$18</div>
+                </div>
+                <p class="pricing-description">Get 2 improved CV templates</p>
+                <ul class="pricing-features">
+                  <li>✓ Traditional Classic Template</li>
+                  <li>✓ Modern Minimalist Template</li>
+                  <li>✓ Ready to send</li>
+                </ul>
+              </div>
+
+              <div 
+                class="pricing-card"
+                :class="{ selected: selectedOption === 'complete' }"
+                @click="selectOption('complete')"
+              >
+                <div class="best-value-badge">Best Value</div>
+                <div class="pricing-header">
+                  <h4>Complete Package</h4>
+                  <div class="price">$20</div>
+                </div>
+                <p class="pricing-description">Get analysis report + 2 improved CV templates</p>
+                <ul class="pricing-features">
+                  <li>✓ Full Analysis Report</li>
+                  <li>✓ Traditional Classic Template</li>
+                  <li>✓ Modern Minimalist Template</li>
+                  <li>✓ Best Value</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="step-actions">
+              <button
+                type="button"
+                @click="goToPreviousStep"
+                class="cta-button secondary"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                @click="handleSubmit"
+                :disabled="!selectedOption || isLoading"
+                class="cta-button"
+              >
+                <span v-if="isLoading">Processing...</span>
+                <span v-else>Continue</span>
+              </button>
+            </div>
+
+            <div v-if="error" class="error-message">
+              {{ error }}
+            </div>
+          </div>
         </div>
 
         <div class="features-section">
@@ -125,17 +206,17 @@
 <script setup>
 import { ref, computed } from 'vue'
 import axios from 'axios'
-// import { loadStripe } from '@stripe/stripe-js' // COMMENTED OUT - Payment disabled
 
 const cvFile = ref(null)
+const role = ref('')
 const jobDescription = ref('')
-const email = ref('') // Not required anymore, but keeping for future use
+const currentStep = ref(1)
+const selectedOption = ref(null)
 const isLoading = ref(false)
 const error = ref('')
-// const price = ref(29.99) // COMMENTED OUT - Payment disabled
 
-const isFormValid = computed(() => {
-  return cvFile.value && jobDescription.value.trim()
+const isStep1Valid = computed(() => {
+  return cvFile.value && role.value.trim()
 })
 
 const handleFileChange = (event) => {
@@ -151,9 +232,28 @@ const handleFileChange = (event) => {
   }
 }
 
-const handleSubmit = async () => {
-  if (!isFormValid.value) {
+const goToNextStep = () => {
+  if (isStep1Valid.value) {
+    error.value = ''
+    currentStep.value = 2
+  } else {
     error.value = 'Please fill in all required fields'
+  }
+}
+
+const goToPreviousStep = () => {
+  currentStep.value = 1
+  error.value = ''
+}
+
+const selectOption = (option) => {
+  selectedOption.value = option
+  error.value = ''
+}
+
+const handleSubmit = async () => {
+  if (!selectedOption.value) {
+    error.value = 'Please select a service option'
     return
   }
 
@@ -164,22 +264,44 @@ const handleSubmit = async () => {
     // Create form data
     const formData = new FormData()
     formData.append('cv', cvFile.value)
-    formData.append('jobDescription', jobDescription.value)
+    formData.append('role', role.value)
+    if (jobDescription.value.trim()) {
+      formData.append('jobDescription', jobDescription.value)
+    }
 
-    // Call analysis endpoint and download ZIP file
-    const response = await axios.post('/api/analyze-cv', formData, {
+    let endpoint = ''
+    let filenamePrefix = ''
+    let responseType = 'blob'
+    let blobType = 'application/zip'
+    let fileExtension = 'zip'
+
+    if (selectedOption.value === 'analysis') {
+      endpoint = '/api/analyze-only'
+      filenamePrefix = 'CV-Analysis-Report'
+      blobType = 'application/pdf'
+      fileExtension = 'pdf'
+    } else if (selectedOption.value === 'improved') {
+      endpoint = '/api/improve-only'
+      filenamePrefix = 'Improved-CV'
+    } else if (selectedOption.value === 'complete') {
+      endpoint = '/api/analyze-cv'
+      filenamePrefix = 'CV-Complete-Package'
+    }
+
+    // Call appropriate endpoint
+    const response = await axios.post(endpoint, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      responseType: 'blob' // Important for file download
+      responseType: responseType
     })
 
-    // Create download link for ZIP file (contains both report and improved CV)
-    const blob = new Blob([response.data], { type: 'application/zip' })
+    // Create download link
+    const blob = new Blob([response.data], { type: blobType })
     const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `CV-Analysis-${Date.now()}.zip`
+    link.download = `${filenamePrefix}-${Date.now()}.${fileExtension}`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -187,9 +309,13 @@ const handleSubmit = async () => {
 
     // Reset form
     cvFile.value = null
+    role.value = ''
     jobDescription.value = ''
-    email.value = ''
-    document.getElementById('cv-file').value = ''
+    selectedOption.value = null
+    currentStep.value = 1
+    if (document.getElementById('cv-file')) {
+      document.getElementById('cv-file').value = ''
+    }
   } catch (err) {
     error.value = err.response?.data?.error || 'An error occurred. Please try again.'
     console.error('Error:', err)
@@ -364,6 +490,132 @@ const handleSubmit = async () => {
   font-size: 0.9rem;
 }
 
+.pricing-step {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pricing-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.pricing-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.pricing-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+  position: relative;
+}
+
+.pricing-card:hover {
+  border-color: #667eea;
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.pricing-card.selected {
+  border-color: #667eea;
+  background: #f8f9ff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.best-value-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+
+.pricing-header {
+  margin-bottom: 20px;
+}
+
+.pricing-header h4 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.pricing-description {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  color: #333;
+}
+
+.pricing-features li {
+  padding: 8px 0;
+  font-size: 0.9rem;
+}
+
+.step-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.cta-button.secondary {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.cta-button.secondary:hover:not(:disabled) {
+  background: #d0d0d0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .features-section {
   margin-top: 60px;
 }
@@ -431,6 +683,10 @@ const handleSubmit = async () => {
 
   .form-container {
     padding: 30px 20px;
+  }
+
+  .pricing-options {
+    grid-template-columns: 1fr;
   }
 
   .features-grid {
