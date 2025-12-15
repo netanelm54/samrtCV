@@ -52,15 +52,15 @@ components/
 │   ├── ModalWrapper.vue
 │   ├── PricingCard.vue
 │   └── FeatureCard.vue
-├── Step1Form.vue        # Feature-specific components
-├── Step2Pricing.vue
-└── LandingPage.vue       # Page-level components
+├── FormStep.vue         # Feature-specific components
+├── PricingStep.vue
+└── Home.vue               # Page-level components
 ```
 
 ### Naming Conventions
 - **Common components**: Generic names (e.g., `PricingCard`, `FeatureCard`)
-- **Feature components**: Descriptive names (e.g., `Step1Form`, `UpsellModal`)
-- **Page components**: Page names (e.g., `LandingPage`, `SuccessPage`)
+- **Feature components**: Descriptive names (e.g., `FormStep`, `PricingStep`, `UpsellModal`)
+- **Page components**: Page names (e.g., `Home`, `SuccessPage`)
 
 ## Using Loops Instead of Duplication
 
@@ -236,5 +236,6 @@ Before creating a new component, ask:
 - `common/FeatureCard.vue` - Feature display cards
 - `common/ModalWrapper.vue` - Modal accessibility wrapper
 - `BaseModal.vue` - Base modal component
-- `Step1Form.vue` - Form step component
-- `Step2Pricing.vue` - Pricing step component
+- `FormStep.vue` - Form step component
+- `PricingStep.vue` - Pricing step component
+

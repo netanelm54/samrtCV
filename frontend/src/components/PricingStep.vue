@@ -25,7 +25,7 @@
           class="terms-checkbox"
         />
         <span>
-          I agree to the 
+          I agree to the
           <a href="#" @click.prevent="$emit('show-terms')" class="terms-link">
             Terms of Service
           </a>
@@ -34,11 +34,7 @@
     </div>
 
     <div class="step-actions">
-      <button
-        type="button"
-        @click="$emit('back')"
-        class="cta-button secondary"
-      >
+      <button type="button" @click="$emit('back')" class="cta-button secondary">
         Back
       </button>
       <button
@@ -59,57 +55,72 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import PricingCard from './common/PricingCard.vue'
+import { ref } from "vue";
+import PricingCard from "./common/PricingCard.vue";
 
 defineProps({
   selectedOption: {
     type: String,
-    default: null
+    default: null,
   },
   isLoading: {
     type: Boolean,
-    default: false
+    default: false,
   },
   error: {
     type: String,
-    default: ''
+    default: "",
   },
   termsAccepted: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-defineEmits(['select-option', 'back', 'submit', 'update:terms-accepted', 'show-terms'])
+defineEmits([
+  "select-option",
+  "back",
+  "submit",
+  "update:terms-accepted",
+  "show-terms",
+]);
 
 const pricingOptions = ref([
   {
-    id: 'analysis',
-    title: 'Analysis Only',
+    id: "analysis",
+    title: "Analysis Only",
     price: 5,
-    description: 'Get detailed CV analysis report',
-    features: ['Match Score', 'Missing Keywords', 'Actionable Recommendations']
+    description: "Get detailed CV analysis report",
+    features: ["Match Score", "Missing Keywords", "Actionable Recommendations"],
   },
   {
-    id: 'improved',
-    title: 'Improved CV',
+    id: "improved",
+    title: "Improved CV",
     price: 18,
-    description: 'Get 2 improved CV templates',
-    features: ['Traditional Classic Template', 'Modern Minimalist Template', 'Ready to send'],
-    badge: 'Most Popular',
-    badgeType: 'popular'
+    description: "Get 2 improved CV templates",
+    features: [
+      "Traditional Classic Template",
+      "Modern Minimalist Template",
+      "Ready to send",
+    ],
+    badge: "Most Popular",
+    badgeType: "popular",
   },
   {
-    id: 'complete',
-    title: 'Complete Package',
+    id: "complete",
+    title: "Complete Package",
     price: 20,
-    description: 'Get analysis report + 2 improved CV templates',
-    features: ['Full Analysis Report', 'Traditional Classic Template', 'Modern Minimalist Template', 'Best Value'],
-    badge: 'Best Value',
-    badgeType: 'best-value'
-  }
-])
+    description: "Get analysis report + 2 improved CV templates",
+    features: [
+      "Full Analysis Report",
+      "Traditional Classic Template",
+      "Modern Minimalist Template",
+      "Best Value",
+    ],
+    badge: "Best Value",
+    badgeType: "best-value",
+  },
+]);
 </script>
 
 <style scoped>

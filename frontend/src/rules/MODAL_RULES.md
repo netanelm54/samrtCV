@@ -148,7 +148,9 @@ components/
 ├── common/
 │   └── ModalWrapper.vue    # Accessibility & focus trap (internal use)
 ├── BaseModal.vue            # Base modal component (use this)
-├── UpsellModal.vue          # Example specific modal
+└── UpsellModal.vue          # Example specific modal
+
+rules/
 └── MODAL_RULES.md           # This file
 ```
 
@@ -160,3 +162,4 @@ When creating new modals, follow this pattern:
 3. Define props and emits
 4. Add only modal-specific styles
 5. Accessibility and focus trap are handled automatically
+
