@@ -1,7 +1,7 @@
 <template>
-  <div class="app">
-    <RouterView />
-  </div>
+	<div class="app">
+		<RouterView />
+	</div>
 </template>
 
 <script setup>
@@ -10,8 +10,7 @@
 
 <style scoped>
 .app {
-  width: 100%;
-  min-height: 100vh;
+	width: 100%;
+	min-height: 100vh;
 }
 </style>
-
