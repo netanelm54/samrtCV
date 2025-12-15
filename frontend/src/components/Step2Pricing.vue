@@ -16,6 +16,23 @@
       />
     </div>
 
+    <div class="terms-checkbox-container">
+      <label class="terms-checkbox-label">
+        <input
+          type="checkbox"
+          :checked="termsAccepted"
+          @change="$emit('update:terms-accepted', $event.target.checked)"
+          class="terms-checkbox"
+        />
+        <span>
+          I agree to the 
+          <a href="#" @click.prevent="$emit('show-terms')" class="terms-link">
+            Terms of Service
+          </a>
+        </span>
+      </label>
+    </div>
+
     <div class="step-actions">
       <button
         type="button"
@@ -27,7 +44,7 @@
       <button
         type="button"
         @click="$emit('submit')"
-        :disabled="!selectedOption || isLoading"
+        :disabled="!selectedOption || !termsAccepted || isLoading"
         class="cta-button"
       >
         <span v-if="isLoading">Processing...</span>
@@ -57,10 +74,14 @@ defineProps({
   error: {
     type: String,
     default: ''
+  },
+  termsAccepted: {
+    type: Boolean,
+    default: false
   }
 })
 
-defineEmits(['select-option', 'back', 'submit'])
+defineEmits(['select-option', 'back', 'submit', 'update:terms-accepted', 'show-terms'])
 
 const pricingOptions = ref([
   {
@@ -158,6 +179,40 @@ const pricingOptions = ref([
   border-radius: 6px;
   color: #c33;
   font-size: 0.9rem;
+}
+
+.terms-checkbox-container {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9ff;
+  border-radius: 8px;
+}
+
+.terms-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.terms-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.terms-link {
+  color: #667eea;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.terms-link:hover {
+  color: #764ba2;
 }
 
 @media (max-width: 768px) {

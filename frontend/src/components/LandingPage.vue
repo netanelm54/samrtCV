@@ -34,9 +34,12 @@
             :selected-option="selectedOption"
             :is-loading="isLoading"
             :error="error"
+            :terms-accepted="termsAccepted"
             @select-option="selectOption"
             @back="goToPreviousStep"
             @submit="handleSubmit"
+            @update:terms-accepted="termsAccepted = $event"
+            @show-terms="showTermsModal = true"
           />
         </div>
 
@@ -47,6 +50,12 @@
           :error="error"
           @close="closeUpsell"
           @purchase="handleUpsellPurchase"
+        />
+
+        <!-- Terms of Service Modal -->
+        <TermsOfServiceModal
+          :show="showTermsModal"
+          @close="showTermsModal = false"
         />
 
         <div class="features-section">
@@ -79,6 +88,7 @@ import UpsellModal from './UpsellModal.vue'
 import Step1Form from './Step1Form.vue'
 import Step2Pricing from './Step2Pricing.vue'
 import FeatureCard from './common/FeatureCard.vue'
+import TermsOfServiceModal from './TermsOfServiceModal.vue'
 
 const cvFile = ref(null)
 const role = ref('')
@@ -88,6 +98,8 @@ const selectedOption = ref(null)
 const isLoading = ref(false)
 const error = ref('')
 const showUpsell = ref(false)
+const showTermsModal = ref(false)
+const termsAccepted = ref(false)
 
 const features = ref([
   {
@@ -108,12 +120,12 @@ const features = ref([
     title: 'Actionable Fixes',
     description: 'Get specific recommendations to improve your resume'
   },
-  {
-    id: 4,
-    icon: '💼',
-    title: 'Interview Prep',
-    description: 'Prepare for interviews with targeted questions'
-  },
+  // {
+  //   id: 4,
+  //   icon: '💼',
+  //   title: 'Interview Prep',
+  //   description: 'Prepare for interviews with targeted questions'
+  // },
   {
     id: 5,
     icon: '✨',
@@ -144,6 +156,7 @@ const goToNextStep = () => {
 const goToPreviousStep = () => {
   currentStep.value = 1
   error.value = ''
+  termsAccepted.value = false
 }
 
 const selectOption = (option) => {
@@ -219,6 +232,7 @@ const handleSubmit = async () => {
     role.value = ''
     jobDescription.value = ''
     selectedOption.value = null
+    termsAccepted.value = false
     currentStep.value = 1
     if (document.getElementById('cv-file')) {
       document.getElementById('cv-file').value = ''
@@ -238,6 +252,7 @@ const closeUpsell = () => {
   role.value = ''
   jobDescription.value = ''
   selectedOption.value = null
+  termsAccepted.value = false
   currentStep.value = 1
   if (document.getElementById('cv-file')) {
     document.getElementById('cv-file').value = ''
