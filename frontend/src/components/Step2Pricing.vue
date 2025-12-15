@@ -133,6 +133,13 @@ const pricingOptions = ref([
   margin-bottom: 30px;
 }
 
+@media (min-width: 1024px) {
+  .pricing-options {
+    width: 150%;
+    margin-inline-start: -25%;
+  }
+}
+
 .step-actions {
   display: flex;
   gap: 15px;
