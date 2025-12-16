@@ -75,7 +75,7 @@ import FormStep from './FormStep.vue';
 import PricingStep from './PricingStep.vue';
 import FeatureCard from './common/FeatureCard.vue';
 import TermsOfServiceModal from './TermsOfServiceModal.vue';
-import { useCVAnalysisStore } from '../stores/cvAnalysisStore.js';
+import { useCVAnalysisStore } from '../stores/index.js';
 
 // Use Pinia store for state management
 const store = useCVAnalysisStore();
