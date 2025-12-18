@@ -8,44 +8,17 @@
 					<h2 class="form-title">Get Your CV Analysis</h2>
 
 					<!-- Step 1: Upload and Basic Info -->
-					<FormStep
-						v-if="store.currentStep === 1"
-						:cv-file="store.cvFile"
-						:role="store.role"
-						:job-description="store.jobDescription"
-						:error="store.error"
-						@update:role="store.setRole"
-						@update:job-description="store.setJobDescription"
-						@file-change="handleFileChange"
-						@next="store.goToNextStep"
-					/>
+					<FormStep v-if="store.currentStep === 1" />
 
 					<!-- Step 2: Choose Service Option -->
-					<PricingStep
-						v-if="store.currentStep === 2"
-						:selected-option="store.selectedOption"
-						:is-loading="store.isLoading"
-						:error="store.error"
-						:terms-accepted="store.termsAccepted"
-						@select-option="store.setSelectedOption"
-						@back="store.goToPreviousStep"
-						@submit="handleSubmit"
-						@update:terms-accepted="store.setTermsAccepted"
-						@show-terms="store.openTermsModal"
-					/>
+					<PricingStep v-if="store.currentStep === 2" />
 				</div>
 
 				<!-- Upsell Modal -->
-				<UpsellModal
-					:show="store.showUpsell"
-					:is-loading="store.isLoading"
-					:error="store.error"
-					@close="store.hideUpsellModal"
-					@purchase="handleUpsellPurchase"
-				/>
+				<UpsellModal />
 
 				<!-- Terms of Service Modal -->
-				<TermsOfServiceModal :show="store.showTermsModal" @close="store.hideTermsModal" />
+				<TermsOfServiceModal />
 
 				<div class="features-section">
 					<h3 class="features-title">What You'll Get</h3>
@@ -77,7 +50,7 @@ import FeatureCard from './common/FeatureCard.vue';
 import TermsOfServiceModal from './TermsOfServiceModal.vue';
 import { useCVAnalysisStore } from '../stores/index.js';
 
-// Use Pinia store for state management
+// Use Pinia store for state management (only needed for conditional rendering)
 const store = useCVAnalysisStore();
 
 // Static features data
@@ -107,43 +80,6 @@ const features = ref([
 		description: 'Get a professional, improved CV PDF ready to send to employers'
 	}
 ]);
-
-// Handle file change from FormStep
-const handleFileChange = ({ error: fileError, file }) => {
-	if (fileError) {
-		store.setFileError(fileError);
-	} else {
-		store.setCVFile(file);
-	}
-};
-
-// Handle form submission
-const handleSubmit = async () => {
-	const success = await store.processCV();
-
-	if (!success) {
-		return;
-	}
-
-	// If analysis option was selected, show upsell modal
-	if (store.selectedOption === 'analysis') {
-		store.showUpsellModal();
-		return;
-	}
-
-	// Reset form for other options
-	store.resetAfterSuccess();
-};
-
-// Handle upsell purchase
-const handleUpsellPurchase = async () => {
-	const success = await store.handleUpsellPurchase();
-
-	if (success) {
-		store.hideUpsellModal();
-		store.resetForm();
-	}
-};
 </script>
 
 <style scoped>

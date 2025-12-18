@@ -11,8 +11,8 @@
 				:features="option.features"
 				:badge="option.badge"
 				:badge-type="option.badgeType"
-				:is-selected="selectedOption === option.id"
-				@select="$emit('select-option', option.id)"
+				:is-selected="store.selectedOption === option.id"
+				@select="store.setSelectedOption(option.id)"
 			/>
 		</div>
 
@@ -20,13 +20,13 @@
 			<label class="terms-checkbox-label">
 				<input
 					type="checkbox"
-					:checked="termsAccepted"
-					@change="$emit('update:terms-accepted', $event.target.checked)"
+					:checked="store.termsAccepted"
+					@change="store.setTermsAccepted($event.target.checked)"
 					class="terms-checkbox"
 				/>
 				<span>
 					I agree to the
-					<a href="#" @click.prevent="$emit('show-terms')" class="terms-link">
+					<a href="#" @click.prevent="store.openTermsModal()" class="terms-link">
 						Terms of Service
 					</a>
 				</span>
@@ -34,20 +34,20 @@
 		</div>
 
 		<div class="step-actions">
-			<button type="button" @click="$emit('back')" class="cta-button secondary">Back</button>
+			<button type="button" @click="store.goToPreviousStep()" class="cta-button secondary">Back</button>
 			<button
 				type="button"
-				@click="$emit('submit')"
-				:disabled="!selectedOption || !termsAccepted || isLoading"
+				@click="handleSubmit"
+				:disabled="!store.canSubmit"
 				class="cta-button"
 			>
-				<span v-if="isLoading">Processing...</span>
+				<span v-if="store.isLoading">Processing...</span>
 				<span v-else>Continue</span>
 			</button>
 		</div>
 
-		<div v-if="error" class="error-message">
-			{{ error }}
+		<div v-if="store.error" class="error-message">
+			{{ store.error }}
 		</div>
 	</div>
 </template>
@@ -55,27 +55,26 @@
 <script setup>
 import { ref } from 'vue';
 import PricingCard from './common/PricingCard.vue';
+import { useCVAnalysisStore } from '../stores/index.js';
 
-defineProps({
-	selectedOption: {
-		type: String,
-		default: null
-	},
-	isLoading: {
-		type: Boolean,
-		default: false
-	},
-	error: {
-		type: String,
-		default: ''
-	},
-	termsAccepted: {
-		type: Boolean,
-		default: false
+const store = useCVAnalysisStore();
+
+const handleSubmit = async () => {
+	const success = await store.processCV();
+
+	if (!success) {
+		return;
 	}
-});
 
-defineEmits(['select-option', 'back', 'submit', 'update:terms-accepted', 'show-terms']);
+	// If analysis option was selected, show upsell modal
+	if (store.selectedOption === 'analysis') {
+		store.showUpsellModal();
+		return;
+	}
+
+	// Reset form for other options
+	store.resetAfterSuccess();
+};
 
 const pricingOptions = ref([
 	{

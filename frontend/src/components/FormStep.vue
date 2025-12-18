@@ -14,7 +14,7 @@
 				class="form-input-file"
 			/>
 			<small class="form-hint">Accepted formats: PDF, DOCX (Max 10MB)</small>
-			<div v-if="cvFile" class="file-info">Selected: {{ cvFile.name }}</div>
+			<div v-if="store.cvFile" class="file-info">Selected: {{ store.cvFile.name }}</div>
 		</div>
 
 		<div class="form-group">
@@ -24,8 +24,8 @@
 			</label>
 			<input
 				id="role"
-				:value="role"
-				@input="$emit('update:role', $event.target.value)"
+				:value="store.role"
+				@input="store.setRole($event.target.value)"
 				type="text"
 				placeholder="e.g., Software Engineer, Product Manager"
 				required
@@ -37,66 +37,37 @@
 			<label for="job-description" class="form-label"> Job Description </label>
 			<textarea
 				id="job-description"
-				:value="jobDescription"
-				@input="$emit('update:jobDescription', $event.target.value)"
+				:value="store.jobDescription"
+				@input="store.setJobDescription($event.target.value)"
 				rows="8"
 				placeholder="Paste the job description here (optional)..."
 				class="form-textarea"
 			></textarea>
 		</div>
 
-		<button type="button" @click="$emit('next')" :disabled="!isValid" class="cta-button">
+		<button type="button" @click="store.goToNextStep()" :disabled="!store.isFormValid" class="cta-button">
 			Next
 		</button>
 
-		<div v-if="error" class="error-message">
-			{{ error }}
+		<div v-if="store.error" class="error-message">
+			{{ store.error }}
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { useCVAnalysisStore } from '../stores/index.js';
 
-const props = defineProps({
-	cvFile: {
-		type: File,
-		default: null
-	},
-	role: {
-		type: String,
-		default: ''
-	},
-	jobDescription: {
-		type: String,
-		default: ''
-	},
-	error: {
-		type: String,
-		default: ''
-	}
-});
+const store = useCVAnalysisStore();
 
-const emit = defineEmits([
-	'update:cvFile',
-	'update:role',
-	'update:jobDescription',
-	'next',
-	'file-change'
-]);
-
-const isValid = computed(() => {
-	return props.cvFile && props.role.trim();
-});
-
-const handleFileChange = event => {
+const handleFileChange = (event) => {
 	const file = event.target.files[0];
 	if (file) {
 		if (file.size > 10 * 1024 * 1024) {
-			emit('file-change', { error: 'File size must be less than 10MB', file: null });
+			store.setFileError('File size must be less than 10MB');
 			return;
 		}
-		emit('file-change', { error: '', file });
+		store.setCVFile(file);
 	}
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<BaseModal :show="show" size="medium" @close="$emit('close')">
+	<BaseModal :show="store.showUpsell" size="medium" @close="store.hideUpsellModal()">
 		<h3 class="upsell-title">Want to Improve Your CV?</h3>
 		<p class="upsell-description">
 			Get 2 professionally improved CV templates tailored to your role and job description.
@@ -10,13 +10,13 @@
 			<div class="upsell-feature">✓ Ready to send to employers</div>
 		</div>
 		<div class="upsell-price">Only $18</div>
-		<div v-if="error" class="error-message">
-			{{ error }}
+		<div v-if="store.error" class="error-message">
+			{{ store.error }}
 		</div>
 		<div class="upsell-actions">
-			<button @click="$emit('close')" class="upsell-button secondary">No Thanks</button>
-			<button @click="$emit('purchase')" :disabled="isLoading" class="upsell-button primary">
-				<span v-if="isLoading">Processing...</span>
+			<button @click="store.hideUpsellModal()" class="upsell-button secondary">No Thanks</button>
+			<button @click="handlePurchase" :disabled="store.isLoading" class="upsell-button primary">
+				<span v-if="store.isLoading">Processing...</span>
 				<span v-else>Get Improved CV</span>
 			</button>
 		</div>
@@ -25,23 +25,18 @@
 
 <script setup>
 import BaseModal from './BaseModal.vue';
+import { useCVAnalysisStore } from '../stores/index.js';
 
-defineProps({
-	show: {
-		type: Boolean,
-		default: false
-	},
-	isLoading: {
-		type: Boolean,
-		default: false
-	},
-	error: {
-		type: String,
-		default: ''
+const store = useCVAnalysisStore();
+
+const handlePurchase = async () => {
+	const success = await store.handleUpsellPurchase();
+
+	if (success) {
+		store.hideUpsellModal();
+		store.resetForm();
 	}
-});
-
-defineEmits(['close', 'purchase']);
+};
 </script>
 
 <style scoped>

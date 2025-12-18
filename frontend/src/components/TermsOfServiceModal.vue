@@ -1,5 +1,5 @@
 <template>
-	<BaseModal :show="show" size="large" @close="$emit('close')">
+	<BaseModal :show="store.showTermsModal" size="large" @close="store.hideTermsModal()">
 		<div class="terms-content">
 			<h1 class="terms-title">Terms of Service</h1>
 			<p class="terms-updated"><strong>Last Updated:</strong> {{ lastUpdated }}</p>
@@ -213,7 +213,7 @@
 			</section>
 
 			<div class="terms-actions">
-				<button @click="$emit('close')" class="terms-button">Close</button>
+				<button @click="store.hideTermsModal()" class="terms-button">Close</button>
 			</div>
 		</div>
 	</BaseModal>
@@ -221,15 +221,9 @@
 
 <script setup>
 import BaseModal from './BaseModal.vue';
+import { useCVAnalysisStore } from '../stores/index.js';
 
-defineProps({
-	show: {
-		type: Boolean,
-		default: false
-	}
-});
-
-defineEmits(['close']);
+const store = useCVAnalysisStore();
 
 const lastUpdated = new Date().toLocaleDateString('en-US', {
 	year: 'numeric',
