@@ -5,6 +5,7 @@ import { useStepState } from './useStepState.js'
 import { useModalState } from './useModalState.js'
 import { useErrorState } from './useErrorState.js'
 import { useLoadingState } from './useLoadingState.js'
+import { usePaymentState } from './usePaymentState.js'
 import { useApiActions } from './useApiActions.js'
 
 /**
@@ -53,6 +54,18 @@ export const useCVAnalysisStore = defineStore('cvAnalysis', () => {
     openTermsModal,
     hideTermsModal
   } = modalState
+
+  // Initialize payment state (needs setError, clearError)
+  const paymentState = usePaymentState(setError, clearError)
+  const {
+    isProcessingPayment,
+    paymentSessionId,
+    paymentMode,
+    createPaymentSession,
+    redirectToCheckout,
+    verifyPayment,
+    resetPayment
+  } = paymentState
 
   // Initialize API actions (needs form state, loading, error)
   const apiActions = useApiActions(
@@ -121,6 +134,9 @@ export const useCVAnalysisStore = defineStore('cvAnalysis', () => {
     showTermsModal,
     isLoading,
     error,
+    isProcessingPayment,
+    paymentSessionId,
+    paymentMode,
     
     // Computed
     isFormValid,
@@ -148,6 +164,12 @@ export const useCVAnalysisStore = defineStore('cvAnalysis', () => {
     // Error Actions
     setError,
     clearError,
+    
+    // Payment Actions
+    createPaymentSession,
+    redirectToCheckout,
+    verifyPayment,
+    resetPayment,
     
     // API Actions
     analyzeOnly,

@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^2.4.0",
+    "@stripe/stripe-js": "^8.6.0",
     "axios": "^1.6.7",
     "pinia": "^3.0.4",
     "vue": "^3.4.21",

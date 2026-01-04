@@ -16,6 +16,20 @@
 			/>
 		</div>
 
+		<div class="email-input-container">
+			<label for="customer-email" class="email-label">
+				Email Address <span class="required">*</span>
+			</label>
+			<input
+				id="customer-email"
+				v-model="customerEmail"
+				type="email"
+				placeholder="your.email@example.com"
+				required
+				class="email-input"
+			/>
+		</div>
+
 		<div class="terms-checkbox-container">
 			<label class="terms-checkbox-label">
 				<input
@@ -38,42 +52,70 @@
 			<button
 				type="button"
 				@click="handleSubmit"
-				:disabled="!store.canSubmit"
+				:disabled="!canProceed"
 				class="cta-button"
 			>
-				<span v-if="store.isLoading">Processing...</span>
-				<span v-else>Continue</span>
+				<span v-if="store.isProcessingPayment">Processing...</span>
+				<span v-else>Continue to Payment</span>
 			</button>
 		</div>
 
 		<div v-if="store.error" class="error-message">
 			{{ store.error }}
 		</div>
+
+		<!-- Payment Modal -->
+		<PaymentModal
+			v-if="showPaymentModal"
+			:show="showPaymentModal"
+			:service-option="store.selectedOption"
+			:customer-email="customerEmail"
+			@close="showPaymentModal = false"
+			@success="handlePaymentSuccess"
+		/>
 	</div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import PricingCard from './common/PricingCard.vue';
+import PaymentModal from './PaymentModal.vue';
 import { useCVAnalysisStore } from '../stores/index.js';
 
 const store = useCVAnalysisStore();
+const customerEmail = ref('');
+const showPaymentModal = ref(false);
 
-const handleSubmit = async () => {
-	const success = await store.processCV();
+const canProceed = computed(() => {
+	return store.selectedOption && 
+		   store.termsAccepted && 
+		   customerEmail.value.trim() && 
+		   isValidEmail(customerEmail.value) &&
+		   !store.isProcessingPayment;
+});
 
-	if (!success) {
+const isValidEmail = (email) => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+};
+
+const handleSubmit = () => {
+	if (!canProceed.value) {
+		if (!customerEmail.value.trim()) {
+			store.setError('Please enter your email address');
+		} else if (!isValidEmail(customerEmail.value)) {
+			store.setError('Please enter a valid email address');
+		}
 		return;
 	}
 
-	// If analysis option was selected, show upsell modal
-	if (store.selectedOption === 'analysis') {
-		store.showUpsellModal();
-		return;
-	}
+	showPaymentModal.value = true;
+};
 
-	// Reset form for other options
-	store.resetAfterSuccess();
+const handlePaymentSuccess = () => {
+	showPaymentModal.value = false;
+	// Payment success will redirect to Stripe, so this won't be called
+	// But if payment is verified via webhook, we'll process CV
 };
 
 const pricingOptions = ref([
@@ -220,6 +262,37 @@ const pricingOptions = ref([
 
 .terms-link:hover {
 	color: #764ba2;
+}
+
+.email-input-container {
+	margin: 20px 0;
+}
+
+.email-label {
+	display: block;
+	font-weight: 600;
+	color: #333;
+	font-size: 0.95rem;
+	margin-bottom: 8px;
+}
+
+.required {
+	color: #e74c3c;
+}
+
+.email-input {
+	width: 100%;
+	padding: 12px;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	font-size: 1rem;
+	font-family: inherit;
+	transition: border-color 0.3s;
+}
+
+.email-input:focus {
+	outline: none;
+	border-color: #667eea;
 }
 
 @media (max-width: 768px) {

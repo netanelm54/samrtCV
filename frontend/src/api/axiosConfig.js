@@ -7,17 +7,24 @@ import axios from 'axios'
 const apiClient = axios.create({
 	baseURL: '',
 	timeout: 300000, // 5 minutes for file uploads
-	headers: {
-		'Content-Type': 'multipart/form-data'
-	}
 })
 
 /**
  * Request interceptor
- * Add any request-level logic here (auth tokens, etc.)
+ * Set Content-Type based on request data type
  */
 apiClient.interceptors.request.use(
 	(config) => {
+		// Set Content-Type based on data type
+		if (config.data instanceof FormData) {
+			// For FormData (file uploads), let axios set Content-Type with boundary automatically
+			// Don't set Content-Type header - axios will handle it
+			delete config.headers['Content-Type']
+		} else if (config.data && typeof config.data === 'object') {
+			// For JSON objects (payment requests, etc.), use application/json
+			config.headers['Content-Type'] = 'application/json'
+		}
+		
 		// Add auth token if needed
 		// const token = localStorage.getItem('token')
 		// if (token) {

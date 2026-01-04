@@ -14,6 +14,16 @@ const router = createRouter({
 			component: () => import('../components/SuccessPage.vue')
 		},
 		{
+			path: '/payment-success',
+			name: 'PaymentSuccess',
+			component: () => import('../components/SuccessPage.vue')
+		},
+		{
+			path: '/payment-cancel',
+			name: 'PaymentCancel',
+			component: () => import('../components/CancelPage.vue')
+		},
+		{
 			path: '/cancel',
 			name: 'Cancel',
 			component: () => import('../components/CancelPage.vue')
