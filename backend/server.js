@@ -23,9 +23,42 @@ dotenv.config({ path: path.join(__dirname, envFile) }) // Environment-specific o
 const app = express()
 const PORT = process.env.PORT || 5001
 
+// Configure CORS with support for multiple origins
+const getAllowedOrigins = () => {
+  const origins = []
+  
+  // Add localhost for development
+  origins.push('http://localhost:3000')
+  
+  // Add FRONTEND_URL if set
+  if (process.env.FRONTEND_URL) {
+    origins.push(process.env.FRONTEND_URL)
+  }
+  
+  return origins
+}
+
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    const allowedOrigins = getAllowedOrigins()
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) {
+      return callback(null, true)
+    }
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      // In development, allow any origin for easier testing
+      if (process.env.NODE_ENV !== 'production') {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  },
   credentials: true
 }))
 app.use(express.json())
