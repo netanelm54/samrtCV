@@ -6,10 +6,19 @@ import { fileURLToPath } from 'url'
 import analysisRoutes from './routes/analysisRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 
-dotenv.config()
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+// Load environment-specific .env file
+// Load .env first as base, then environment-specific file to override
+const envFile = process.env.NODE_ENV === 'production' 
+  ? '.env.prod' 
+  : process.env.NODE_ENV === 'staging' 
+  ? '.env.staging' 
+  : '.env.dev'
+
+dotenv.config({ path: path.join(__dirname, '.env') }) // Base config
+dotenv.config({ path: path.join(__dirname, envFile) }) // Environment-specific overrides
 
 const app = express()
 const PORT = process.env.PORT || 5001

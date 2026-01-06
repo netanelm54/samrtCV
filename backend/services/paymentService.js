@@ -2,12 +2,23 @@ import Stripe from 'stripe'
 
 class PaymentService {
   constructor() {
-    const secretKey = process.env.STRIPE_SECRET_KEY
-    if (!secretKey) {
-      throw new Error('STRIPE_SECRET_KEY is not set in environment variables')
-    }
-    this.stripe = new Stripe(secretKey)
+    this._stripe = null
     this.paymentMode = process.env.PAYMENT_MODE || 'test'
+  }
+
+  /**
+   * Get Stripe client instance (lazy initialization)
+   * @returns {Stripe} Stripe client
+   */
+  get stripe() {
+    if (!this._stripe) {
+      const secretKey = process.env.STRIPE_SECRET_KEY
+      if (!secretKey) {
+        throw new Error('STRIPE_SECRET_KEY is not set in environment variables')
+      }
+      this._stripe = new Stripe(secretKey)
+    }
+    return this._stripe
   }
 
   /**

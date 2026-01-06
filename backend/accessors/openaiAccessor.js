@@ -1,12 +1,23 @@
 import OpenAI from 'openai'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 class OpenAIAccessor {
   constructor() {
-    this.client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    this._client = null
     this.model = process.env.OPENAI_MODEL || 'gpt-4o'
+  }
+
+  /**
+   * Get OpenAI client instance (lazy initialization)
+   * @returns {OpenAI} OpenAI client
+   */
+  get client() {
+    if (!this._client) {
+      if (!process.env.OPENAI_API_KEY) {
+        throw new Error('OPENAI_API_KEY environment variable is not set')
+      }
+      this._client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    }
+    return this._client
   }
 
   /**

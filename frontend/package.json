@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "vite --mode dev",
+    "dev:staging": "vite --mode staging",
+    "build": "vite build --mode prod",
+    "build:dev": "vite build --mode dev",
+    "build:staging": "vite build --mode staging",
+    "build:prod": "vite build --mode prod",
+    "preview": "vite preview",
+    "preview:dev": "vite preview --mode dev",
+    "preview:staging": "vite preview --mode staging",
+    "preview:prod": "vite preview --mode prod"
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.6.0",

@@ -5,7 +5,7 @@ import axios from 'axios'
  * Centralized configuration for all API requests
  */
 const apiClient = axios.create({
-	baseURL: '',
+	baseURL: import.meta.env.VITE_API_URL || '',
 	timeout: 300000, // 5 minutes for file uploads
 })
 
