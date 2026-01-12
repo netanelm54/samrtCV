@@ -13,8 +13,28 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useCVAnalysisStore } from '../stores/index.js';
+import { restoreFormData } from '../utils/persistence.js';
 
 const router = useRouter();
+const store = useCVAnalysisStore();
+
+// Restore form data when canceling payment so user can retry
+const restoredData = restoreFormData();
+if (restoredData) {
+	if (restoredData.cvFile) {
+		store.setCVFile(restoredData.cvFile);
+	}
+	if (restoredData.role) {
+		store.setRole(restoredData.role);
+	}
+	if (restoredData.jobDescription) {
+		store.setJobDescription(restoredData.jobDescription);
+	}
+	if (restoredData.selectedOption) {
+		store.setSelectedOption(restoredData.selectedOption);
+	}
+}
 
 const goHome = () => {
 	router.push('/');

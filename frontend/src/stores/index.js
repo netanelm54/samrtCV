@@ -7,6 +7,7 @@ import { useErrorState } from './useErrorState.js'
 import { useLoadingState } from './useLoadingState.js'
 import { usePaymentState } from './usePaymentState.js'
 import { useApiActions } from './useApiActions.js'
+import { clearFormData } from '../utils/persistence.js'
 
 /**
  * Main Pinia store for CV Analysis
@@ -111,6 +112,8 @@ export const useCVAnalysisStore = defineStore('cvAnalysis', () => {
     resetStep()
     clearError()
     resetFileInput()
+    // Clear localStorage when user explicitly resets form
+    clearFormData()
   }
 
   const resetAfterSuccess = () => {

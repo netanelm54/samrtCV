@@ -81,6 +81,7 @@ import { ref, computed } from 'vue';
 import PricingCard from './common/PricingCard.vue';
 import PaymentModal from './PaymentModal.vue';
 import { useCVAnalysisStore } from '../stores/index.js';
+import { saveFormData } from '../utils/persistence.js';
 
 const store = useCVAnalysisStore();
 const customerEmail = ref('');
@@ -99,13 +100,28 @@ const isValidEmail = (email) => {
 	return emailRegex.test(email);
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
 	if (!canProceed.value) {
 		if (!customerEmail.value.trim()) {
 			store.setError('Please enter your email address');
 		} else if (!isValidEmail(customerEmail.value)) {
 			store.setError('Please enter a valid email address');
 		}
+		return;
+	}
+
+	// Save form data to localStorage before opening payment modal
+	// This ensures the file and form data persist across Stripe redirect
+	try {
+		await saveFormData({
+			cvFile: store.cvFile,
+			role: store.role,
+			jobDescription: store.jobDescription,
+			selectedOption: store.selectedOption
+		});
+	} catch (error) {
+		console.error('Failed to save form data:', error);
+		store.setError('Failed to save form data. Please try again.');
 		return;
 	}
 

@@ -32,6 +32,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useCVAnalysisStore } from '../stores/index.js';
+import { restoreFormData, clearFormData } from '../utils/persistence.js';
 
 const router = useRouter();
 const route = useRoute();
@@ -47,6 +48,26 @@ const verifyAndProcess = async () => {
 		error.value = '';
 		store.clearError();
 
+		// Restore form data from localStorage before processing
+		// This ensures we have the file and form data after Stripe redirect
+		const restoredData = restoreFormData();
+		if (restoredData) {
+			if (restoredData.cvFile) {
+				store.setCVFile(restoredData.cvFile);
+			}
+			if (restoredData.role) {
+				store.setRole(restoredData.role);
+			}
+			if (restoredData.jobDescription) {
+				store.setJobDescription(restoredData.jobDescription);
+			}
+			if (restoredData.selectedOption) {
+				store.setSelectedOption(restoredData.selectedOption);
+			}
+		} else {
+			throw new Error('Form data not found. Please start over.');
+		}
+
 		// Get session ID from URL
 		const sessionId = route.query.session_id;
 		if (!sessionId) {
@@ -60,11 +81,19 @@ const verifyAndProcess = async () => {
 			throw new Error('Payment verification failed');
 		}
 
-		// Get service option from metadata
+		// Get service option from metadata or restored data
 		const serviceOption = verification.metadata?.serviceOption || store.selectedOption;
 
 		if (!serviceOption) {
 			throw new Error('Service option not found');
+		}
+
+		// Verify we have the required file and role
+		if (!store.cvFile) {
+			throw new Error('CV file not found. Please upload your CV again.');
+		}
+		if (!store.role || !store.role.trim()) {
+			throw new Error('Role information not found. Please enter your role again.');
 		}
 
 		// Process CV based on service option
@@ -85,6 +114,9 @@ const verifyAndProcess = async () => {
 
 		if (success) {
 			processingComplete.value = true;
+			
+			// Clear localStorage after successful processing
+			clearFormData();
 			
 			// If analysis only, show upsell modal after a delay
 			if (serviceOption === 'analysis') {
