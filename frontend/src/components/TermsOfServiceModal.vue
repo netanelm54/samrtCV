@@ -208,7 +208,7 @@
 				<p>For questions regarding these Terms, please contact:</p>
 				<p>
 					<strong>SmartCV</strong><br />
-					[Insert Contact Email]
+					<a href="mailto:magnet134@gmail.com">magnet134@gmail.com</a>
 				</p>
 			</section>
 
