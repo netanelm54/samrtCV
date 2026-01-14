@@ -18,7 +18,7 @@
 
 		<div class="email-input-container">
 			<label for="customer-email" class="email-label">
-				Email Address <span class="required">*</span>
+				Email Address <span class="required" aria-label="required">*</span>
 			</label>
 			<input
 				id="customer-email"
@@ -27,7 +27,10 @@
 				placeholder="your.email@example.com"
 				required
 				class="email-input"
+				aria-required="true"
+				aria-describedby="email-description"
 			/>
+			<span id="email-description" class="sr-only">Enter your email address to receive the CV analysis report</span>
 		</div>
 
 		<div class="terms-checkbox-container">
@@ -37,14 +40,22 @@
 					:checked="store.termsAccepted"
 					@change="store.setTermsAccepted($event.target.checked)"
 					class="terms-checkbox"
+					aria-required="true"
+					aria-describedby="terms-description"
 				/>
 				<span>
 					I agree to the
-					<a href="#" @click.prevent="store.openTermsModal()" class="terms-link">
+					<a 
+						href="#" 
+						@click.prevent="store.openTermsModal()" 
+						class="terms-link"
+						aria-label="Open Terms of Service modal"
+					>
 						Terms of Service
 					</a>
 				</span>
 			</label>
+			<span id="terms-description" class="sr-only">You must accept the terms of service to proceed</span>
 		</div>
 
 		<div class="step-actions">
@@ -60,7 +71,13 @@
 			</button>
 		</div>
 
-		<div v-if="store.error" class="error-message">
+		<div 
+			v-if="store.error" 
+			class="error-message"
+			role="alert"
+			aria-live="assertive"
+			aria-atomic="true"
+		>
 			{{ store.error }}
 		</div>
 
@@ -213,12 +230,24 @@ const pricingOptions = ref([
 	cursor: pointer;
 	transition:
 		transform 0.2s,
-		box-shadow 0.2s;
+		box-shadow 0.2s,
+		outline 0.2s;
+	min-height: 44px;
 }
 
 .cta-button:hover:not(:disabled) {
 	transform: translateY(-2px);
 	box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.cta-button:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+}
+
+.cta-button:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 
 .cta-button:disabled {
@@ -240,10 +269,23 @@ const pricingOptions = ref([
 .error-message {
 	padding: 12px;
 	background: #fee;
-	border: 1px solid #fcc;
+	border: 2px solid #c33;
 	border-radius: 6px;
-	color: #c33;
-	font-size: 0.9rem;
+	color: #8b0000;
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
 }
 
 .terms-checkbox-container {
@@ -263,10 +305,18 @@ const pricingOptions = ref([
 }
 
 .terms-checkbox {
-	width: 18px;
-	height: 18px;
+	width: 20px;
+	height: 20px;
+	min-width: 20px;
+	min-height: 20px;
 	cursor: pointer;
 	accent-color: #667eea;
+}
+
+.terms-checkbox:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+	border-radius: 2px;
 }
 
 .terms-link {
@@ -303,12 +353,19 @@ const pricingOptions = ref([
 	border-radius: 8px;
 	font-size: 1rem;
 	font-family: inherit;
-	transition: border-color 0.3s;
+	transition: border-color 0.3s, outline 0.2s;
+	min-height: 44px;
 }
 
 .email-input:focus {
-	outline: none;
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 	border-color: #667eea;
+}
+
+.email-input:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 
 @media (max-width: 768px) {

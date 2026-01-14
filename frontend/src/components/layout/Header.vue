@@ -1,5 +1,5 @@
 <template>
-	<header class="hero-section">
+	<header class="hero-section" role="banner">
 		<div class="container">
 			<h1 class="hero-title">AI Career Matcher</h1>
 			<p class="hero-subtitle">Get expert analysis of your CV against any job description</p>

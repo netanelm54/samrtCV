@@ -1,9 +1,9 @@
 <template>
-	<div class="cv-form">
+	<div class="cv-form" role="form" aria-label="CV Upload Form">
 		<div class="form-group">
 			<label for="cv-file" class="form-label">
 				Upload Your CV/Resume
-				<span class="required">*</span>
+				<span class="required" aria-label="required">*</span>
 			</label>
 			<input
 				id="cv-file"
@@ -12,15 +12,19 @@
 				@change="handleFileChange"
 				required
 				class="form-input-file"
+				aria-describedby="cv-file-hint"
+				aria-required="true"
 			/>
-			<small class="form-hint">Accepted formats: PDF, DOCX (Max 10MB)</small>
-			<div v-if="store.cvFile" class="file-info">Selected: {{ store.cvFile.name }}</div>
+			<small id="cv-file-hint" class="form-hint">Accepted formats: PDF, DOCX (Max 10MB)</small>
+			<div v-if="store.cvFile" class="file-info" role="status" aria-live="polite">
+				Selected: {{ store.cvFile.name }}
+			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="role" class="form-label">
 				Role
-				<span class="required">*</span>
+				<span class="required" aria-label="required">*</span>
 			</label>
 			<input
 				id="role"
@@ -30,7 +34,10 @@
 				placeholder="e.g., Software Engineer, Product Manager"
 				required
 				class="form-input"
+				aria-required="true"
+				aria-describedby="role-description"
 			/>
+			<span id="role-description" class="sr-only">Enter the job title or role you are applying for</span>
 		</div>
 
 		<div class="form-group">
@@ -42,14 +49,29 @@
 				rows="8"
 				placeholder="Paste the job description here (optional)..."
 				class="form-textarea"
+				aria-describedby="job-description-hint"
 			></textarea>
+			<span id="job-description-hint" class="sr-only">Optional: Paste the full job description for better analysis</span>
 		</div>
 
-		<button type="button" @click="store.goToNextStep()" :disabled="!store.isFormValid" class="cta-button">
+		<button 
+			type="button" 
+			@click="store.goToNextStep()" 
+			:disabled="!store.isFormValid" 
+			class="cta-button"
+			aria-describedby="next-button-description"
+		>
 			Next
 		</button>
+		<span id="next-button-description" class="sr-only">Proceed to pricing selection</span>
 
-		<div v-if="store.error" class="error-message">
+		<div 
+			v-if="store.error" 
+			class="error-message" 
+			role="alert" 
+			aria-live="assertive"
+			aria-atomic="true"
+		>
 			{{ store.error }}
 		</div>
 	</div>
@@ -102,13 +124,21 @@ const handleFileChange = (event) => {
 	border-radius: 8px;
 	font-size: 1rem;
 	font-family: inherit;
-	transition: border-color 0.3s;
+	transition: border-color 0.3s, outline 0.2s;
+	min-height: 44px;
 }
 
 .form-input:focus,
 .form-textarea:focus {
-	outline: none;
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 	border-color: #667eea;
+}
+
+.form-input:focus-visible,
+.form-textarea:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 
 .form-textarea {
@@ -152,8 +182,10 @@ const handleFileChange = (event) => {
 	cursor: pointer;
 	transition:
 		transform 0.2s,
-		box-shadow 0.2s;
+		box-shadow 0.2s,
+		outline 0.2s;
 	margin-top: 10px;
+	min-height: 44px;
 }
 
 .cta-button:hover:not(:disabled) {
@@ -161,17 +193,40 @@ const handleFileChange = (event) => {
 	box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
 }
 
+.cta-button:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+}
+
+.cta-button:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+}
+
 .cta-button:disabled {
 	opacity: 0.6;
 	cursor: not-allowed;
 }
 
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
 .error-message {
 	padding: 12px;
 	background: #fee;
-	border: 1px solid #fcc;
+	border: 2px solid #c33;
 	border-radius: 6px;
-	color: #c33;
-	font-size: 0.9rem;
+	color: #8b0000;
+	font-size: 1rem;
+	font-weight: 500;
 }
 </style>

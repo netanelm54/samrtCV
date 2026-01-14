@@ -1,8 +1,9 @@
 <template>
 	<div class="home">
+		<a href="#main-content" class="skip-link">Skip to main content</a>
 		<Header />
 
-		<main class="main-content">
+		<main id="main-content" class="main-content" role="main">
 			<div class="container">
 				<div class="form-container">
 					<h2 class="form-title">Get Your CV Analysis</h2>
@@ -20,18 +21,19 @@
 				<!-- Terms of Service Modal -->
 				<TermsOfServiceModal />
 
-				<div class="features-section">
-					<h3 class="features-title">What You'll Get</h3>
-					<div class="features-grid">
+				<section class="features-section" aria-labelledby="features-title">
+					<h3 id="features-title" class="features-title">What You'll Get</h3>
+					<div class="features-grid" role="list">
 						<FeatureCard
 							v-for="feature in features"
 							:key="feature.id"
 							:icon="feature.icon"
 							:title="feature.title"
 							:description="feature.description"
+							role="listitem"
 						/>
 					</div>
-				</div>
+				</section>
 			</div>
 		</main>
 

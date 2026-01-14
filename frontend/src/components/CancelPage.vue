@@ -1,13 +1,19 @@
 <template>
 	<div class="cancel-page">
-		<div class="container">
+		<main class="container" role="main">
 			<div class="cancel-card">
-				<div class="cancel-icon">❌</div>
+				<div class="cancel-icon" aria-hidden="true">❌</div>
 				<h1>Payment Cancelled</h1>
 				<p>Your payment was cancelled. No charges were made.</p>
-				<button @click="goHome" class="home-button">Return Home</button>
+				<button 
+					@click="goHome" 
+					class="home-button"
+					aria-label="Return to home page"
+				>
+					Return Home
+				</button>
 			</div>
-		</div>
+		</main>
 	</div>
 </template>
 
@@ -90,10 +96,21 @@ p {
 	font-size: 1.1rem;
 	font-weight: 600;
 	cursor: pointer;
-	transition: transform 0.2s;
+	transition: transform 0.2s, outline 0.2s;
+	min-height: 44px;
 }
 
 .home-button:hover {
 	transform: translateY(-2px);
+}
+
+.home-button:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+}
+
+.home-button:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 </style>

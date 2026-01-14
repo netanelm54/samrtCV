@@ -100,6 +100,7 @@ defineEmits(['close'])
 6. **Focus trap is automatic**: Focus is trapped within modal automatically
 7. **Consistent sizing**: Use size prop (small/medium/large/full) instead of custom widths
 8. **Provide IDs for accessibility**: Use `title-id` and `description-id` props for better screen reader support
+9. **Follow A11Y guidelines**: See `A11Y_RULES.md` for complete accessibility requirements
 
 ## Examples
 

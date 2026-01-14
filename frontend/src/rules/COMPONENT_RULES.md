@@ -229,6 +229,7 @@ Before creating a new component, ask:
 - [ ] Does this have a clear, single responsibility?
 - [ ] Can I use a loop instead of duplication?
 - [ ] Is the component name descriptive?
+- [ ] **Does it follow accessibility guidelines?** (See `A11Y_RULES.md`)
 
 ## Current Reusable Components
 

@@ -1,13 +1,25 @@
 <template>
-	<div class="pricing-card" :class="{ selected: isSelected }" @click="$emit('select')">
-		<div v-if="badge" :class="badgeClass">{{ badge }}</div>
+	<div 
+		class="pricing-card" 
+		:class="{ selected: isSelected }" 
+		@click="$emit('select')"
+		@keydown.enter="$emit('select')"
+		@keydown.space.prevent="$emit('select')"
+		role="button"
+		:aria-pressed="isSelected"
+		:aria-label="`Select ${title} service option for $${price}`"
+		tabindex="0"
+	>
+		<div v-if="badge" :class="badgeClass" :aria-label="`Badge: ${badge}`">{{ badge }}</div>
 		<div class="pricing-header">
 			<h4>{{ title }}</h4>
-			<div class="price">${{ price }}</div>
+			<div class="price" aria-label="Price: ${{ price }}">${{ price }}</div>
 		</div>
 		<p class="pricing-description">{{ description }}</p>
-		<ul class="pricing-features">
-			<li v-for="feature in features" :key="feature">✓ {{ feature }}</li>
+		<ul class="pricing-features" role="list">
+			<li v-for="feature in features" :key="feature" role="listitem">
+				<span aria-hidden="true">✓</span> {{ feature }}
+			</li>
 		</ul>
 	</div>
 </template>
@@ -64,12 +76,24 @@ const badgeClass = computed(() => {
 	transition: all 0.3s;
 	text-align: center;
 	position: relative;
+	outline: none;
 }
 
 .pricing-card:hover {
 	border-color: #667eea;
 	transform: translateY(-4px);
 	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.pricing-card:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+	border-color: #667eea;
+}
+
+.pricing-card:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 
 .pricing-card.selected {
@@ -120,9 +144,9 @@ const badgeClass = computed(() => {
 }
 
 .pricing-description {
-	color: #666;
+	color: #555;
 	margin-bottom: 20px;
-	font-size: 0.95rem;
+	font-size: 1rem;
 }
 
 .pricing-features {
@@ -134,6 +158,6 @@ const badgeClass = computed(() => {
 
 .pricing-features li {
 	padding: 8px 0;
-	font-size: 0.9rem;
+	font-size: 1rem;
 }
 </style>

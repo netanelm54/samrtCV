@@ -1,30 +1,39 @@
 <template>
 	<div class="success-page">
-		<div class="container">
+		<main class="container" role="main">
 			<div class="success-card">
-				<div class="success-icon">✅</div>
+				<div class="success-icon" aria-hidden="true">✅</div>
 				<h1>Payment Successful!</h1>
-				<div v-if="isProcessing" class="processing-state">
+				<div v-if="isProcessing" class="processing-state" role="status" aria-live="polite" aria-busy="true">
 					<p>Verifying payment and processing your CV...</p>
-					<div class="loading-spinner"></div>
+					<div class="loading-spinner" aria-label="Loading"></div>
 				</div>
-				<div v-else-if="error" class="error-state">
+				<div v-else-if="error" class="error-state" role="alert" aria-live="assertive">
 					<p class="error-text">{{ error }}</p>
-					<button @click="retryVerification" class="retry-button">Retry</button>
+					<button @click="retryVerification" class="retry-button" aria-label="Retry payment verification">
+						Retry
+					</button>
 				</div>
-				<div v-else-if="processingComplete" class="complete-state">
+				<div v-else-if="processingComplete" class="complete-state" role="status" aria-live="polite">
 					<p>Your CV analysis is being processed.</p>
 					<p class="info-text">
 						You will receive a detailed PDF report at your email address within a few
 						minutes.
 					</p>
 				</div>
-				<div v-else>
+				<div v-else role="status" aria-live="polite">
 					<p>Verifying your payment...</p>
 				</div>
-				<button v-if="!isProcessing && !error" @click="goHome" class="home-button">Return Home</button>
+				<button 
+					v-if="!isProcessing && !error" 
+					@click="goHome" 
+					class="home-button"
+					aria-label="Return to home page"
+				>
+					Return Home
+				</button>
 			</div>
-		</div>
+		</main>
 	</div>
 </template>
 
@@ -233,9 +242,10 @@ p {
 }
 
 .error-text {
-	color: #e74c3c;
+	color: #8b0000;
 	font-weight: 600;
 	margin-bottom: 15px;
+	font-size: 1rem;
 }
 
 .retry-button {
@@ -248,11 +258,22 @@ p {
 	font-size: 1rem;
 	font-weight: 600;
 	cursor: pointer;
-	transition: transform 0.2s;
+	transition: transform 0.2s, outline 0.2s;
+	min-height: 44px;
 }
 
 .retry-button:hover {
 	transform: translateY(-2px);
+}
+
+.retry-button:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+}
+
+.retry-button:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 
 .complete-state {
@@ -269,10 +290,21 @@ p {
 	font-size: 1.1rem;
 	font-weight: 600;
 	cursor: pointer;
-	transition: transform 0.2s;
+	transition: transform 0.2s, outline 0.2s;
+	min-height: 44px;
 }
 
 .home-button:hover {
 	transform: translateY(-2px);
+}
+
+.home-button:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+}
+
+.home-button:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 </style>

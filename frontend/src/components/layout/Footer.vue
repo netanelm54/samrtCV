@@ -1,5 +1,5 @@
 <template>
-	<footer class="footer">
+	<footer class="footer" role="contentinfo">
 		<div class="container">
 			<div class="footer-content">
 				<div class="footer-brand">
@@ -7,22 +7,38 @@
 					<p class="brand-tagline">AI-Powered CV Analysis & Improvement</p>
 				</div>
 
-				<div class="footer-links">
+				<nav class="footer-links" aria-label="Footer navigation">
 					<h4 class="links-title">Quick Links</h4>
 					<ul class="links-list">
 						<li>
-							<button @click="openTermsModal" class="footer-link">Terms of Service</button>
+							<button 
+								@click="openTermsModal" 
+								class="footer-link"
+								aria-label="Open Terms of Service modal"
+							>
+								Terms of Service
+							</button>
 						</li>
 						<li>
-							<a href="mailto:magnet134@gmail.com" class="footer-link">Customer Support</a>
+							<a 
+								href="mailto:magnet134@gmail.com" 
+								class="footer-link"
+								aria-label="Contact customer support via email"
+							>
+								Customer Support
+							</a>
 						</li>
 					</ul>
-				</div>
+				</nav>
 
 				<div class="footer-contact">
 					<h4 class="contact-title">Contact Us</h4>
 					<p class="contact-info">
-						<a href="mailto:magnet134@gmail.com" class="contact-email">
+						<a 
+							href="mailto:magnet134@gmail.com" 
+							class="contact-email"
+							aria-label="Send email to magnet134@gmail.com"
+						>
 							magnet134@gmail.com
 						</a>
 					</p>
@@ -84,7 +100,7 @@ const openTermsModal = () => {
 
 .brand-tagline {
 	font-size: 0.9rem;
-	color: #ccc;
+	color: #e0e0e0;
 	line-height: 1.6;
 }
 
@@ -113,12 +129,14 @@ const openTermsModal = () => {
 .footer-link {
 	background: none;
 	border: none;
-	color: #ccc;
+	color: #e0e0e0;
 	text-decoration: none;
 	font-size: 0.95rem;
 	cursor: pointer;
-	transition: color 0.3s;
-	padding: 0;
+	transition: color 0.3s, outline 0.2s;
+	padding: 4px 8px;
+	margin: -4px -8px;
+	border-radius: 4px;
 	font-family: inherit;
 }
 
@@ -127,25 +145,40 @@ const openTermsModal = () => {
 	text-decoration: underline;
 }
 
+.footer-link:focus {
+	outline: 2px solid #667eea;
+	outline-offset: 2px;
+	color: #667eea;
+}
+
 .footer-contact {
 	text-align: left;
 }
 
 .contact-info {
 	margin: 0;
-	color: #ccc;
+	color: #e0e0e0;
 	font-size: 0.95rem;
 }
 
 .contact-email {
-	color: #667eea;
+	color: #7c8ef5;
 	text-decoration: none;
-	transition: color 0.3s;
+	transition: color 0.3s, outline 0.2s;
+	padding: 2px 4px;
+	margin: -2px -4px;
+	border-radius: 4px;
 }
 
 .contact-email:hover {
-	color: #764ba2;
+	color: #9ba8ff;
 	text-decoration: underline;
+}
+
+.contact-email:focus {
+	outline: 2px solid #667eea;
+	outline-offset: 2px;
+	color: #9ba8ff;
 }
 
 .footer-bottom {
@@ -155,7 +188,7 @@ const openTermsModal = () => {
 }
 
 .copyright {
-	color: #999;
+	color: #b0b0b0;
 	font-size: 0.9rem;
 	margin: 0;
 }

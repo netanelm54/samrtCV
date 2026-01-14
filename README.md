@@ -180,6 +180,32 @@ smartCV/
    - Sends email with PDF attachment
 6. User receives email with analysis report
 
+## Accessibility (A11Y)
+
+**All code changes MUST follow accessibility guidelines.**
+
+This project follows WCAG 2.1 Level AA standards. Before submitting any code:
+
+1. **Review the Accessibility Rules**: See `frontend/src/rules/A11Y_RULES.md`
+2. **Test with keyboard navigation**: Ensure all features work without a mouse
+3. **Test with screen readers**: Use NVDA (Windows) or VoiceOver (Mac)
+4. **Check color contrast**: Use WebAIM Contrast Checker
+5. **Verify focus indicators**: All interactive elements must have visible focus
+
+### Quick Checklist
+
+- [ ] Semantic HTML used where possible
+- [ ] ARIA attributes added for custom widgets
+- [ ] Keyboard navigation works
+- [ ] Focus indicators visible
+- [ ] Color contrast meets WCAG AA (4.5:1 for text)
+- [ ] Form labels associated with inputs
+- [ ] Error messages announced to screen readers
+- [ ] Images have alt text
+- [ ] Dynamic content has live regions
+
+See `frontend/src/rules/A11Y_RULES.md` for complete guidelines.
+
 ## Security Notes
 
 - Never commit `.env` files

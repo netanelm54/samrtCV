@@ -1,8 +1,14 @@
 <template>
-	<BaseModal :show="store.showTermsModal" size="large" @close="store.hideTermsModal()">
+	<BaseModal 
+		:show="store.showTermsModal" 
+		size="large" 
+		@close="store.hideTermsModal()"
+		:title-id="'terms-title'"
+		:description-id="'terms-description'"
+	>
 		<div class="terms-content">
-			<h1 class="terms-title">Terms of Service</h1>
-			<p class="terms-updated"><strong>Last Updated:</strong> {{ lastUpdated }}</p>
+			<h1 id="terms-title" class="terms-title">Terms of Service</h1>
+			<p id="terms-description" class="terms-updated"><strong>Last Updated:</strong> {{ lastUpdated }}</p>
 
 			<p>
 				These Terms of Service ("Terms") govern your access to and use of the CV analysis,
@@ -213,7 +219,13 @@
 			</section>
 
 			<div class="terms-actions">
-				<button @click="store.hideTermsModal()" class="terms-button">Close</button>
+				<button 
+					@click="store.hideTermsModal()" 
+					class="terms-button"
+					aria-label="Close Terms of Service modal"
+				>
+					Close
+				</button>
 			</div>
 		</div>
 	</BaseModal>
@@ -304,12 +316,24 @@ const lastUpdated = new Date().toLocaleDateString('en-US', {
 	cursor: pointer;
 	transition:
 		transform 0.2s,
-		box-shadow 0.2s;
+		box-shadow 0.2s,
+		outline 0.2s;
+	min-height: 44px;
 }
 
 .terms-button:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.terms-button:focus {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
+}
+
+.terms-button:focus-visible {
+	outline: 3px solid #667eea;
+	outline-offset: 2px;
 }
 
 /* Scrollbar styling */
