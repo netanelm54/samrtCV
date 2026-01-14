@@ -10,7 +10,7 @@ export function usePaymentState(setError, clearError) {
 	// Payment State
 	const isProcessingPayment = ref(false)
 	const paymentSessionId = ref(null)
-	const paymentMode = ref('test') // 'test' or 'production'
+	const paymentMode = ref('test') // 'test' or 'live'
 	const stripeInstance = ref(null)
 
 	// Initialize Stripe

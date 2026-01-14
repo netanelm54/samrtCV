@@ -51,7 +51,7 @@ class PaymentController {
         sessionId: session.id,
         url: session.url,
         clientSecret: session.client_secret, // For embedded checkout
-        paymentMode: paymentService.isTestMode() ? 'test' : 'production',
+        paymentMode: paymentService.isTestMode() ? 'test' : 'live',
         publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
       })
     } catch (error) {
@@ -90,7 +90,7 @@ class PaymentController {
       res.json({
         paid: isTestMode || isPaid,
         sessionId: session.id,
-        paymentMode: isTestMode ? 'test' : 'production',
+        paymentMode: isTestMode ? 'test' : 'live',
         metadata: session.metadata
       })
     } catch (error) {

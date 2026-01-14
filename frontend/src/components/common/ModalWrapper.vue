@@ -202,6 +202,10 @@ onUnmounted(() => {
 	z-index: 1000;
 	padding: 20px;
 	animation: fadeIn 0.2s ease-out;
+	width: 100%;
+}
+.modal-wrapper-container {
+	width: 100%;
 }
 
 @keyframes fadeIn {

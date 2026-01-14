@@ -87,6 +87,7 @@ const modalClass = computed(() => {
 	animation: slideIn 0.3s ease-out;
 	max-height: 90vh;
 	overflow-y: auto;
+	margin: auto;
 }
 
 @keyframes slideIn {
@@ -101,11 +102,11 @@ const modalClass = computed(() => {
 }
 
 .modal-small {
-	max-width: 400px;
+	max-width: 420px;
 }
 
 .modal-medium {
-	max-width: 500px;
+	max-width: 560px;
 }
 
 .modal-large {

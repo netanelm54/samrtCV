@@ -1,5 +1,5 @@
 <template>
-	<BaseModal :show="show" size="large" @close="handleClose">
+	<BaseModal :show="show" size="medium" @close="handleClose">
 		<div class="payment-modal">
 			<h3 class="payment-title">Complete Payment</h3>
 			
