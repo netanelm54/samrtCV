@@ -214,7 +214,7 @@
 				<p>For questions regarding these Terms, please contact:</p>
 				<p>
 					<strong>SmartCV</strong><br />
-					<a href="mailto:magnet134@gmail.com">magnet134@gmail.com</a>
+					<a href="mailto:aismartcvllc@gmail.com">aismartcvllc@gmail.com</a>
 				</p>
 			</section>
 

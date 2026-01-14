@@ -21,7 +21,7 @@
 						</li>
 						<li>
 							<a 
-								href="mailto:magnet134@gmail.com" 
+								href="mailto:aismartcvllc@gmail.com" 
 								class="footer-link"
 								aria-label="Contact customer support via email"
 							>
@@ -35,11 +35,11 @@
 					<h4 class="contact-title">Contact Us</h4>
 					<p class="contact-info">
 						<a 
-							href="mailto:magnet134@gmail.com" 
+							href="mailto:aismartcvllc@gmail.com" 
 							class="contact-email"
-							aria-label="Send email to magnet134@gmail.com"
+							aria-label="Send email to aismartcvllc@gmail.com"
 						>
-							magnet134@gmail.com
+							aismartcvllc@gmail.com
 						</a>
 					</p>
 				</div>
