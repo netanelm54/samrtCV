@@ -28,9 +28,9 @@ class PaymentService {
    */
   getPrice(serviceOption) {
     const prices = {
-      analysis: parseFloat(process.env.PRICE_ANALYSIS_ONLY || '5.00'),
-      improved: parseFloat(process.env.PRICE_IMPROVED_ONLY || '18.00'),
-      complete: parseFloat(process.env.PRICE_COMPLETE_PACKAGE || '20.00')
+      analysis: parseFloat(process.env.PRICE_ANALYSIS_ONLY || '3.90'),
+      improved: parseFloat(process.env.PRICE_IMPROVED_ONLY || '6.90'),
+      complete: parseFloat(process.env.PRICE_COMPLETE_PACKAGE || '9.90')
     }
     return prices[serviceOption] || 0
   }

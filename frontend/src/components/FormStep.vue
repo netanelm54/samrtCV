@@ -56,7 +56,7 @@
 
 		<button 
 			type="button" 
-			@click="store.goToNextStep()" 
+			@click="handleNextClick" 
 			:disabled="!store.isFormValid" 
 			class="cta-button"
 			aria-describedby="next-button-description"
@@ -78,7 +78,9 @@
 </template>
 
 <script setup>
+import { watch } from 'vue';
 import { useCVAnalysisStore } from '../stores/index.js';
+import analytics from '../utils/analytics.js';
 
 const store = useCVAnalysisStore();
 
@@ -87,9 +89,32 @@ const handleFileChange = (event) => {
 	if (file) {
 		if (file.size > 10 * 1024 * 1024) {
 			store.setFileError('File size must be less than 10MB');
+			analytics.trackError(new Error('File size exceeds limit'), { step: 'form_upload' });
 			return;
 		}
 		store.setCVFile(file);
+		// Track file upload (but not step 1 success yet - that happens when clicking Next)
+	}
+};
+
+// Track step 1 success when user clicks Next button
+// We'll track this in the store's goToNextStep method, but also watch for form validity
+watch(() => store.isFormValid, (isValid) => {
+	if (isValid && store.cvFile && store.role) {
+		// Form is complete, but wait for Next button click to track
+	}
+});
+
+// Override the Next button click to track before proceeding
+const handleNextClick = () => {
+	if (store.isFormValid) {
+		// Track step 1 success before proceeding
+		analytics.trackStep1Success({
+			file: store.cvFile,
+			role: store.role,
+			jobDescription: store.jobDescription
+		});
+		store.goToNextStep();
 	}
 };
 </script>

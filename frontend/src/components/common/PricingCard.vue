@@ -13,7 +13,7 @@
 		<div v-if="badge" :class="badgeClass" :aria-label="`Badge: ${badge}`">{{ badge }}</div>
 		<div class="pricing-header">
 			<h4>{{ title }}</h4>
-			<div class="price" aria-label="Price: ${{ price }}">${{ price }}</div>
+			<div class="price" aria-label="Price: ${{ price }}">${{ parseFloat(price).toFixed(2) }}</div>
 		</div>
 		<p class="pricing-description">{{ description }}</p>
 		<ul class="pricing-features" role="list">

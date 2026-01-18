@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Header from './layout/Header.vue';
 import Footer from './layout/Footer.vue';
 import UpsellModal from './UpsellModal.vue';
@@ -51,9 +51,15 @@ import PricingStep from './PricingStep.vue';
 import FeatureCard from './common/FeatureCard.vue';
 import TermsOfServiceModal from './TermsOfServiceModal.vue';
 import { useCVAnalysisStore } from '../stores/index.js';
+import analytics from '../utils/analytics.js';
 
 // Use Pinia store for state management (only needed for conditional rendering)
 const store = useCVAnalysisStore();
+
+// Track page view when component mounts
+onMounted(() => {
+	analytics.trackPageView();
+});
 
 // Static features data
 const features = ref([

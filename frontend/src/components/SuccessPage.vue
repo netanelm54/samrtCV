@@ -17,8 +17,7 @@
 				<div v-else-if="processingComplete" class="complete-state" role="status" aria-live="polite">
 					<p>Your CV analysis is being processed.</p>
 					<p class="info-text">
-						You will receive a detailed PDF report at your email address within a few
-						minutes.
+						Your PDF report is downloading directly to your computer. You will receive a payment invoice via email.
 					</p>
 				</div>
 				<div v-else role="status" aria-live="polite">
@@ -42,6 +41,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useCVAnalysisStore } from '../stores/index.js';
 import { restoreFormData, clearFormData } from '../utils/persistence.js';
+import analytics from '../utils/analytics.js';
 
 const router = useRouter();
 const route = useRoute();
@@ -87,8 +87,16 @@ const verifyAndProcess = async () => {
 		const verification = await store.verifyPayment(sessionId);
 
 		if (!verification.paid) {
+			analytics.trackError(new Error('Payment verification failed'), { step: 'payment_verification' });
 			throw new Error('Payment verification failed');
 		}
+
+		// Track payment success
+		analytics.trackPaymentSuccess({
+			sessionId: sessionId,
+			serviceOption: verification.metadata?.serviceOption,
+			amount: verification.amount_total ? verification.amount_total / 100 : null
+		});
 
 		// Get service option from metadata or restored data
 		const serviceOption = verification.metadata?.serviceOption || store.selectedOption;
@@ -124,6 +132,20 @@ const verifyAndProcess = async () => {
 		if (success) {
 			processingComplete.value = true;
 			
+			// Track file received
+			const fileType = serviceOption === 'analysis' ? 'application/pdf' : 'application/zip';
+			const fileName = serviceOption === 'analysis' 
+				? `CV-Analysis-Report-${Date.now()}.pdf`
+				: serviceOption === 'improved'
+				? `Improved-CV-${Date.now()}.zip`
+				: `CV-Complete-Package-${Date.now()}.zip`;
+			
+			analytics.trackFileReceived({
+				serviceOption: serviceOption,
+				fileName: fileName,
+				fileType: fileType
+			});
+			
 			// Clear localStorage after successful processing
 			clearFormData();
 			
@@ -140,10 +162,12 @@ const verifyAndProcess = async () => {
 				}, 3000);
 			}
 		} else {
+			analytics.trackError(new Error('Failed to process CV'), { step: 'cv_processing' });
 			throw new Error('Failed to process CV');
 		}
 	} catch (err) {
 		console.error('Payment verification error:', err);
+		analytics.trackError(err, { step: 'payment_verification' });
 		error.value = err.response?.data?.error || err.message || 'Failed to verify payment';
 	} finally {
 		isProcessing.value = false;

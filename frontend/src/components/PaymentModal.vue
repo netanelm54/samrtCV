@@ -84,9 +84,9 @@ const serviceName = computed(() => {
 
 const price = computed(() => {
 	const prices = {
-		analysis: 5.00,
-		improved: 18.00,
-		complete: 20.00
+		analysis: 3.90,
+		improved: 6.90,
+		complete: 9.90
 	};
 	return prices[props.serviceOption] || 0;
 });

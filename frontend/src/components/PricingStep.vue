@@ -94,15 +94,23 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import PricingCard from './common/PricingCard.vue';
 import PaymentModal from './PaymentModal.vue';
 import { useCVAnalysisStore } from '../stores/index.js';
 import { saveFormData } from '../utils/persistence.js';
+import analytics from '../utils/analytics.js';
 
 const store = useCVAnalysisStore();
 const customerEmail = ref('');
 const showPaymentModal = ref(false);
+
+// Track step 2 start when component mounts
+onMounted(() => {
+	analytics.trackStep2Start({
+		selectedOption: store.selectedOption
+	});
+});
 
 const canProceed = computed(() => {
 	return store.selectedOption && 
@@ -117,6 +125,39 @@ const isValidEmail = (email) => {
 	return emailRegex.test(email);
 };
 
+const pricingOptions = ref([
+	{
+		id: 'analysis',
+		title: 'Analysis Only',
+		price: 3.90,
+		description: 'Get detailed CV analysis report',
+		features: ['Match Score', 'Missing Keywords', 'Actionable Recommendations']
+	},
+	{
+		id: 'improved',
+		title: 'Improved CV',
+		price: 6.90,
+		description: 'Get 2 improved CV templates',
+		features: ['Traditional Classic Template', 'Modern Minimalist Template', 'Ready to send'],
+		badge: 'Most Popular',
+		badgeType: 'popular'
+	},
+	{
+		id: 'complete',
+		title: 'Complete Package',
+		price: 9.90,
+		description: 'Get analysis report + 2 improved CV templates',
+		features: [
+			'Full Analysis Report',
+			'Traditional Classic Template',
+			'Modern Minimalist Template',
+			'Best Value'
+		],
+		badge: 'Best Value',
+		badgeType: 'best-value'
+	}
+]);
+
 const handleSubmit = async () => {
 	if (!canProceed.value) {
 		if (!customerEmail.value.trim()) {
@@ -126,6 +167,15 @@ const handleSubmit = async () => {
 		}
 		return;
 	}
+
+	// Track payment initiated
+	const selectedPlan = pricingOptions.value.find(opt => opt.id === store.selectedOption);
+	analytics.trackPaymentInitiated({
+		selectedOption: store.selectedOption,
+		customerEmail: customerEmail.value,
+		termsAccepted: store.termsAccepted,
+		price: selectedPlan?.price || 0
+	});
 
 	// Save form data to localStorage before opening payment modal
 	// This ensures the file and form data persist across Stripe redirect
@@ -138,6 +188,7 @@ const handleSubmit = async () => {
 		});
 	} catch (error) {
 		console.error('Failed to save form data:', error);
+		analytics.trackError(error, { step: 'pricing_save_data' });
 		store.setError('Failed to save form data. Please try again.');
 		return;
 	}
@@ -150,39 +201,6 @@ const handlePaymentSuccess = () => {
 	// Payment success will redirect to Stripe, so this won't be called
 	// But if payment is verified via webhook, we'll process CV
 };
-
-const pricingOptions = ref([
-	{
-		id: 'analysis',
-		title: 'Analysis Only',
-		price: 5,
-		description: 'Get detailed CV analysis report',
-		features: ['Match Score', 'Missing Keywords', 'Actionable Recommendations']
-	},
-	{
-		id: 'improved',
-		title: 'Improved CV',
-		price: 18,
-		description: 'Get 2 improved CV templates',
-		features: ['Traditional Classic Template', 'Modern Minimalist Template', 'Ready to send'],
-		badge: 'Most Popular',
-		badgeType: 'popular'
-	},
-	{
-		id: 'complete',
-		title: 'Complete Package',
-		price: 20,
-		description: 'Get analysis report + 2 improved CV templates',
-		features: [
-			'Full Analysis Report',
-			'Traditional Classic Template',
-			'Modern Minimalist Template',
-			'Best Value'
-		],
-		badge: 'Best Value',
-		badgeType: 'best-value'
-	}
-]);
 </script>
 
 <style scoped>

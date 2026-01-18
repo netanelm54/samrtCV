@@ -9,7 +9,7 @@
 			<div class="upsell-feature">✓ Modern Minimalist Template</div>
 			<div class="upsell-feature">✓ Ready to send to employers</div>
 		</div>
-		<div class="upsell-price">Only $18</div>
+		<div class="upsell-price">Only $6.90</div>
 		<div v-if="store.error" class="error-message">
 			{{ store.error }}
 		</div>
