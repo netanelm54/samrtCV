@@ -1,11 +1,12 @@
 <template>
 	<header class="hero-section" role="banner">
 		<div class="container">
-			<h1 class="hero-title">AI Career Matcher</h1>
-			<p class="hero-subtitle">Get expert analysis of your CV against any job description</p>
+			<h1 class="hero-title">SmartCV - CV Analysis & Improved CV Generator</h1>
+			<p class="hero-subtitle">Get Your CV Analyzed with AI - Smart CV Analyzer & Improved CV Maker</p>
 			<p class="hero-description">
-				Our AI-powered system analyzes your resume and provides actionable insights to
-				improve your match score
+				Use our AI-powered CV analyzer to get expert analysis of your resume against any job description. 
+				Get improved CV templates, match scores, missing keywords, and actionable insights. 
+				Try SmartCV - the best CV with AI technology for resume optimization.
 			</p>
 		</div>
 	</header>
@@ -31,7 +32,7 @@
 }
 
 .hero-title {
-	font-size: 3.5rem;
+	font-size: 3rem;
 	font-weight: 700;
 	margin-bottom: 1rem;
 	letter-spacing: -0.02em;

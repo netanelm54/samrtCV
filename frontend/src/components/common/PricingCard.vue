@@ -13,7 +13,12 @@
 		<div v-if="badge" :class="badgeClass" :aria-label="`Badge: ${badge}`">{{ badge }}</div>
 		<div class="pricing-header">
 			<h4>{{ title }}</h4>
-			<div class="price" aria-label="Price: ${{ price }}">${{ parseFloat(price).toFixed(2) }}</div>
+			<div class="price-container">
+				<span v-if="originalPrice" class="original-price" aria-label="Original price: ${{ originalPrice }}">
+					${{ parseFloat(originalPrice).toFixed(2) }}
+				</span>
+				<div class="price" aria-label="Price: ${{ price }}">${{ parseFloat(price).toFixed(2) }}</div>
+			</div>
 		</div>
 		<p class="pricing-description">{{ description }}</p>
 		<ul class="pricing-features" role="list">
@@ -35,6 +40,10 @@ const props = defineProps({
 	price: {
 		type: [String, Number],
 		required: true
+	},
+	originalPrice: {
+		type: [String, Number],
+		default: null
 	},
 	description: {
 		type: String,
@@ -135,6 +144,21 @@ const badgeClass = computed(() => {
 	font-size: 1.5rem;
 	color: #333;
 	margin-bottom: 10px;
+}
+
+.price-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+
+.original-price {
+	font-size: 1.2rem;
+	font-weight: 500;
+	color: #999;
+	text-decoration: line-through;
+	text-decoration-thickness: 2px;
 }
 
 .price {

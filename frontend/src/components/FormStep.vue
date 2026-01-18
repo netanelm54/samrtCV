@@ -1,5 +1,9 @@
 <template>
 	<div class="cv-form" role="form" aria-label="CV Upload Form">
+
+		<h2 class="form-title">Get Started</h2>
+		<p class="form-subtitle">Upload your CV and get instant AI-powered analysis. Our improved CV generator creates professional resumes optimized for your target job.</p>
+
 		<div class="form-group">
 			<label for="cv-file" class="form-label">
 				Upload Your CV/Resume
@@ -253,5 +257,26 @@ const handleNextClick = () => {
 	color: #8b0000;
 	font-size: 1rem;
 	font-weight: 500;
+}
+
+
+.form-title {
+	font-size: 2rem;
+	margin-bottom: 30px;
+	color: #333;
+	text-align: center;
+}
+
+
+
+.form-subtitle {
+	text-align: center;
+	color: #555;
+	font-size: 1.1rem;
+	margin-bottom: 30px;
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: 1.6;
 }
 </style>

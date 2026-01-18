@@ -2,10 +2,11 @@
 	<footer class="footer" role="contentinfo">
 		<div class="container">
 			<div class="footer-content">
-				<div class="footer-brand">
-					<h3 class="brand-name">SmartCV</h3>
-					<p class="brand-tagline">AI-Powered CV Analysis & Improvement</p>
-				</div>
+					<div class="footer-brand">
+						<h3 class="brand-name">SmartCV</h3>
+						<p class="brand-tagline">AI-Powered CV Analysis & Improved CV Generator | CV with AI Technology</p>
+						<p class="brand-keywords">SmartCV, CV with AI, Improved CV, AI CV Analysis, CV Analyzer, Resume Analysis, AI Resume Improvement</p>
+					</div>
 
 				<nav class="footer-links" aria-label="Footer navigation">
 					<h4 class="links-title">Quick Links</h4>
@@ -101,7 +102,15 @@ const openTermsModal = () => {
 .brand-tagline {
 	font-size: 0.9rem;
 	color: #e0e0e0;
+	margin-top: 8px;
 	line-height: 1.6;
+}
+
+.brand-keywords {
+	font-size: 0.8rem;
+	color: #999;
+	margin-top: 8px;
+	line-height: 1.5;
 }
 
 .footer-links {

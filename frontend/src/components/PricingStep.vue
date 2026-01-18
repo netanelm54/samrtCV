@@ -1,12 +1,14 @@
 <template>
 	<div class="pricing-step">
 		<h3 class="pricing-title">Choose Your Service</h3>
+		<p class="pricing-subtitle">Select from our AI-powered CV analysis and improved CV generation services. Get professional CV optimization with SmartCV.</p>
 		<div class="pricing-options">
 			<PricingCard
 				v-for="option in pricingOptions"
 				:key="option.id"
 				:title="option.title"
 				:price="option.price"
+				:original-price="option.originalPrice"
 				:description="option.description"
 				:features="option.features"
 				:badge="option.badge"
@@ -130,6 +132,7 @@ const pricingOptions = ref([
 		id: 'analysis',
 		title: 'Analysis Only',
 		price: 3.90,
+		originalPrice: 10,
 		description: 'Get detailed CV analysis report',
 		features: ['Match Score', 'Missing Keywords', 'Actionable Recommendations']
 	},
@@ -137,6 +140,7 @@ const pricingOptions = ref([
 		id: 'improved',
 		title: 'Improved CV',
 		price: 6.90,
+		originalPrice: 30,
 		description: 'Get 2 improved CV templates',
 		features: ['Traditional Classic Template', 'Modern Minimalist Template', 'Ready to send'],
 		badge: 'Most Popular',
@@ -146,6 +150,7 @@ const pricingOptions = ref([
 		id: 'complete',
 		title: 'Complete Package',
 		price: 9.90,
+		originalPrice: 40,
 		description: 'Get analysis report + 2 improved CV templates',
 		features: [
 			'Full Analysis Report',
@@ -212,9 +217,20 @@ const handlePaymentSuccess = () => {
 
 .pricing-title {
 	font-size: 1.5rem;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	color: #333;
 	text-align: center;
+}
+
+.pricing-subtitle {
+	font-size: 1rem;
+	margin-bottom: 30px;
+	color: #666;
+	text-align: center;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: 1.6;
 }
 
 .pricing-options {

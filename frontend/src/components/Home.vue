@@ -6,8 +6,6 @@
 		<main id="main-content" class="main-content" role="main">
 			<div class="container">
 				<div class="form-container">
-					<h2 class="form-title">Get Your CV Analysis</h2>
-
 					<!-- Step 1: Upload and Basic Info -->
 					<FormStep v-if="store.currentStep === 1" />
 
@@ -22,7 +20,8 @@
 				<TermsOfServiceModal />
 
 				<section class="features-section" aria-labelledby="features-title">
-					<h3 id="features-title" class="features-title">What You'll Get</h3>
+					<h3 id="features-title" class="features-title">What You'll Get with SmartCV - CV Analysis & Improved CV</h3>
+					<p class="features-intro">Our AI-powered CV analyzer provides comprehensive resume analysis and generates improved CV templates. Get professional CV optimization with SmartCV.</p>
 					<div class="features-grid" role="list">
 						<FeatureCard
 							v-for="feature in features"
@@ -66,26 +65,38 @@ const features = ref([
 	{
 		id: 1,
 		icon: '📊',
-		title: 'Match Score',
-		description: 'See how well your CV matches the job description (0-100)'
+		title: 'AI CV Match Score',
+		description: 'See how well your CV matches the job description with our smart CV analyzer (0-100 score)'
 	},
 	{
 		id: 2,
 		icon: '🔍',
-		title: 'Missing Keywords',
-		description: 'Identify critical keywords you should add to your CV'
+		title: 'Missing Keywords Analysis',
+		description: 'Identify critical keywords you should add to your CV for better ATS optimization'
 	},
 	{
 		id: 3,
 		icon: '⚡',
-		title: 'Actionable Fixes',
-		description: 'Get specific recommendations to improve your resume'
+		title: 'Actionable CV Improvements',
+		description: 'Get specific recommendations to improve your resume with AI-powered insights'
+	},
+	{
+		id: 4,
+		icon: '🤖',
+		title: 'AI-Powered CV Analysis',
+		description: 'Advanced artificial intelligence analyzes your CV structure, content, and formatting'
 	},
 	{
 		id: 5,
 		icon: '✨',
-		title: 'Ready-to-Send CV',
-		description: 'Get a professional, improved CV PDF ready to send to employers'
+		title: 'Improved CV Templates',
+		description: 'Get professional, ready-to-send improved CV PDFs optimized for your target job'
+	},
+	{
+		id: 6,
+		icon: '🎯',
+		title: 'CV Optimization',
+		description: 'Optimize your CV with AI to increase your chances of getting noticed by employers'
 	}
 ]);
 </script>
@@ -104,6 +115,17 @@ const features = ref([
 	width: 100%;
 }
 
+.features-intro {
+	text-align: center;
+	color: #666;
+	font-size: 1rem;
+	margin-bottom: 30px;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: 1.6;
+}
+
 .main-content {
 	flex: 1;
 	padding: 60px 20px;
@@ -119,13 +141,6 @@ const features = ref([
 	max-width: 700px;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-.form-title {
-	font-size: 2rem;
-	margin-bottom: 30px;
-	color: #333;
-	text-align: center;
 }
 
 .features-section {
