@@ -29,6 +29,18 @@
 								Customer Support
 							</a>
 						</li>
+						<li>
+							<a 
+								href="https://www.tiktok.com/@smatcv" 
+								target="_blank"
+								rel="noopener noreferrer"
+								class="footer-link footer-link-with-icon"
+								aria-label="Follow SmartCV on TikTok"
+							>
+								<img :src="tiktokIcon" alt="" class="tiktok-icon" aria-hidden="true" />
+								TikTok
+							</a>
+						</li>
 					</ul>
 				</nav>
 
@@ -56,6 +68,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useCVAnalysisStore } from '../../stores/index.js';
+import tiktokIcon from '../../assets/tiktok.svg';
 
 const store = useCVAnalysisStore();
 
@@ -150,14 +163,33 @@ const openTermsModal = () => {
 }
 
 .footer-link:hover {
-	color: #667eea;
+	color: var(--color-primary);
 	text-decoration: underline;
 }
 
 .footer-link:focus {
-	outline: 2px solid #667eea;
+	outline: 2px solid var(--color-primary);
 	outline-offset: 2px;
-	color: #667eea;
+	color: var(--color-primary);
+}
+
+.footer-link-with-icon {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.tiktok-icon {
+	width: 20px;
+	height: 20px;
+	filter: brightness(0) invert(1);
+	transition: opacity 0.3s;
+	opacity: 0.9;
+}
+
+.footer-link-with-icon:hover .tiktok-icon,
+.footer-link-with-icon:focus .tiktok-icon {
+	opacity: 1;
 }
 
 .footer-contact {
@@ -171,7 +203,7 @@ const openTermsModal = () => {
 }
 
 .contact-email {
-	color: #7c8ef5;
+	color: var(--color-primary);
 	text-decoration: none;
 	transition: color 0.3s, outline 0.2s;
 	padding: 2px 4px;
@@ -180,14 +212,14 @@ const openTermsModal = () => {
 }
 
 .contact-email:hover {
-	color: #9ba8ff;
+	color: var(--color-accent);
 	text-decoration: underline;
 }
 
 .contact-email:focus {
-	outline: 2px solid #667eea;
+	outline: 2px solid var(--color-primary);
 	outline-offset: 2px;
-	color: #9ba8ff;
+	color: var(--color-accent);
 }
 
 .footer-bottom {

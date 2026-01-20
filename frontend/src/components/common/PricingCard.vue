@@ -89,26 +89,26 @@ const badgeClass = computed(() => {
 }
 
 .pricing-card:hover {
-	border-color: #667eea;
+	border-color: var(--color-primary);
 	transform: translateY(-4px);
-	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+	box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.2);
 }
 
 .pricing-card:focus {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
-	border-color: #667eea;
+	border-color: var(--color-primary);
 }
 
 .pricing-card:focus-visible {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 
 .pricing-card.selected {
-	border-color: #667eea;
-	background: #f8f9ff;
-	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+	border-color: var(--color-primary);
+	background: var(--color-bg-light);
+	box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.3);
 }
 
 .popular-badge,
@@ -127,8 +127,8 @@ const badgeClass = computed(() => {
 }
 
 .popular-badge {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+	box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.4);
 }
 
 .best-value-badge {
@@ -164,7 +164,7 @@ const badgeClass = computed(() => {
 .price {
 	font-size: 2rem;
 	font-weight: 700;
-	color: #667eea;
+	color: var(--color-primary);
 }
 
 .pricing-description {

@@ -192,12 +192,12 @@ This document outlines accessibility requirements based on WCAG 2.1 Level AA sta
 
 - All focusable elements must have visible focus indicators
 - Minimum 2px outline, preferably 3px
-- Use high contrast colors (e.g., #667eea)
+- Use high contrast colors (e.g., var(--color-primary))
 
 ```vue
 <!-- ✅ Good: Visible focus -->
 .button:focus-visible {
-  outline: 3px solid #667eea;
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 ```
@@ -291,7 +291,7 @@ This document outlines accessibility requirements based on WCAG 2.1 Level AA sta
 ```vue
 /* ✅ Good: Focus styles */
 .button:focus-visible {
-  outline: 3px solid #667eea;
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 ```
@@ -500,7 +500,7 @@ Before submitting code, verify:
 }
 
 .button:focus-visible {
-  outline: 3px solid #667eea;
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 </style>

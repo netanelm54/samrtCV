@@ -255,8 +255,8 @@ const handlePaymentSuccess = () => {
 
 .cta-button {
 	padding: 16px 32px;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+	color: var(--color-white);
 	border: none;
 	border-radius: 8px;
 	font-size: 1.1rem;
@@ -271,16 +271,16 @@ const handlePaymentSuccess = () => {
 
 .cta-button:hover:not(:disabled) {
 	transform: translateY(-2px);
-	box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+	box-shadow: 0 6px 12px rgba(var(--color-primary-rgb), 0.4);
 }
 
 .cta-button:focus {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 
 .cta-button:focus-visible {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 
@@ -344,24 +344,24 @@ const handlePaymentSuccess = () => {
 	min-width: 20px;
 	min-height: 20px;
 	cursor: pointer;
-	accent-color: #667eea;
+	accent-color: var(--color-primary);
 }
 
 .terms-checkbox:focus {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 	border-radius: 2px;
 }
 
 .terms-link {
-	color: #667eea;
+	color: var(--color-primary);
 	text-decoration: underline;
 	font-weight: 600;
 	transition: color 0.2s;
 }
 
 .terms-link:hover {
-	color: #764ba2;
+	color: var(--color-accent);
 }
 
 .email-input-container {
@@ -392,13 +392,13 @@ const handlePaymentSuccess = () => {
 }
 
 .email-input:focus {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
-	border-color: #667eea;
+	border-color: var(--color-primary);
 }
 
 .email-input:focus-visible {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 

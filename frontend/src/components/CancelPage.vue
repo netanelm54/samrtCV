@@ -53,7 +53,7 @@ const goHome = () => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
 	padding: 20px;
 }
 
@@ -89,8 +89,8 @@ p {
 
 .home-button {
 	padding: 14px 32px;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+	color: var(--color-white);
 	border: none;
 	border-radius: 8px;
 	font-size: 1.1rem;
@@ -105,12 +105,12 @@ p {
 }
 
 .home-button:focus {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 
 .home-button:focus-visible {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 </style>

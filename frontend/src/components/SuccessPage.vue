@@ -200,7 +200,7 @@ onMounted(() => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
 	padding: 20px;
 }
 
@@ -248,7 +248,7 @@ p {
 
 .loading-spinner {
 	border: 4px solid #f3f3f3;
-	border-top: 4px solid #667eea;
+	border-top: 4px solid var(--color-primary);
 	border-radius: 50%;
 	width: 40px;
 	height: 40px;
@@ -275,8 +275,8 @@ p {
 .retry-button {
 	margin-top: 15px;
 	padding: 12px 24px;
-	background: #667eea;
-	color: white;
+	background: var(--color-primary);
+	color: var(--color-white);
 	border: none;
 	border-radius: 8px;
 	font-size: 1rem;
@@ -291,12 +291,12 @@ p {
 }
 
 .retry-button:focus {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 
 .retry-button:focus-visible {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 
@@ -307,8 +307,8 @@ p {
 .home-button {
 	margin-top: 30px;
 	padding: 14px 32px;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
+	background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+	color: var(--color-white);
 	border: none;
 	border-radius: 8px;
 	font-size: 1.1rem;
@@ -323,12 +323,12 @@ p {
 }
 
 .home-button:focus {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 
 .home-button:focus-visible {
-	outline: 3px solid #667eea;
+	outline: 3px solid var(--color-primary);
 	outline-offset: 2px;
 }
 </style>

@@ -1,3 +1,27 @@
+:root {
+  /* Primary Colors */
+  --color-primary: #667eea;
+  --color-accent: #764ba2;
+  
+  /* Color variations for gradients and effects */
+  --color-primary-rgb: 53, 147, 210;
+  --color-accent-rgb: 152, 200, 92;
+  
+  /* Neutral Colors */
+  --color-text: #333;
+  --color-text-light: #666;
+  --color-text-lighter: #999;
+  --color-bg: #f5f5f5;
+  --color-bg-light: #f8f9ff;
+  --color-white: #ffffff;
+  --color-border: #e0e0e0;
+  
+  /* Error Colors */
+  --color-error: #c33;
+  --color-error-bg: #fee;
+  --color-error-border: #fcc;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,10 +29,10 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
-  color: #333;
-  background: #f5f5f5;
+  color: var(--color-text);
+  background: var(--color-bg);
   font-size: 16px; /* Minimum readable font size */
 }
 
@@ -21,8 +45,8 @@ body {
   position: absolute;
   top: -40px;
   left: 0;
-  background: #667eea;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-white);
   padding: 12px 24px;
   text-decoration: none;
   font-weight: 600;
@@ -33,7 +57,7 @@ body {
 
 .skip-link:focus {
   top: 0;
-  outline: 3px solid #764ba2;
+  outline: 3px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -48,7 +72,7 @@ input[type="radio"] {
 
 /* Improve focus visibility globally */
 *:focus-visible {
-  outline: 3px solid #667eea;
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 
