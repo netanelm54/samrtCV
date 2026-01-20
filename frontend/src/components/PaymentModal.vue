@@ -24,6 +24,15 @@
 				{{ error }}
 			</div>
 
+			<!-- Security Disclaimer -->
+			<div class="security-disclaimer" role="note" aria-label="Payment security information">
+				<span class="security-icon" aria-hidden="true">🔒</span>
+				<p class="security-text">
+					<strong>Secure Payment:</strong> Your payment is processed securely by Stripe. 
+					SmartCV does not see, store, or have access to your card details at any point during the payment process.
+				</p>
+			</div>
+
 			<!-- Stripe Embedded Checkout Container -->
 			<div v-if="!checkoutReady" class="payment-loading">
 				<p>Loading payment form...</p>
@@ -348,6 +357,47 @@ onUnmounted(() => {
 	text-align: center;
 	padding: 40px;
 	color: #666;
+}
+
+.security-disclaimer {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 12px 15px;
+	background: #f0f7ff;
+	border: 1px solid #cce5ff;
+	border-radius: 6px;
+	margin: 15px 0;
+	font-size: 0.85rem;
+	line-height: 1.5;
+}
+
+.security-icon {
+	font-size: 1.2rem;
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.security-text {
+	margin: 0;
+	color: #555;
+	flex: 1;
+}
+
+.security-text strong {
+	color: #333;
+	font-weight: 600;
+}
+
+@media (max-width: 768px) {
+	.security-disclaimer {
+		font-size: 0.8rem;
+		padding: 10px 12px;
+	}
+	
+	.security-icon {
+		font-size: 1rem;
+	}
 }
 </style>
 
