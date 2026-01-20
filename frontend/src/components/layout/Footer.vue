@@ -121,7 +121,7 @@ const openTermsModal = () => {
 
 .brand-keywords {
 	font-size: 0.8rem;
-	color: #999;
+	color: var(--color-text-lighter);
 	margin-top: 8px;
 	line-height: 1.5;
 }

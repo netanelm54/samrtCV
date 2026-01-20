@@ -224,13 +224,13 @@ onMounted(() => {
 
 h1 {
 	font-size: 2.5rem;
-	color: #333;
+	color: var(--color-text);
 	margin-bottom: 16px;
 }
 
 p {
 	font-size: 1.1rem;
-	color: #666;
+	color: var(--color-text-light);
 	margin-bottom: 12px;
 }
 
@@ -239,7 +239,7 @@ p {
 	padding: 20px;
 	background: #f0f7ff;
 	border-radius: 8px;
-	color: #333;
+	color: var(--color-text);
 }
 
 .processing-state {

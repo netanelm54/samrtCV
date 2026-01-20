@@ -138,7 +138,7 @@ const handleNextClick = () => {
 
 .form-label {
 	font-weight: 600;
-	color: #333;
+	color: var(--color-text);
 	font-size: 0.95rem;
 }
 
@@ -188,7 +188,7 @@ const handleNextClick = () => {
 }
 
 .form-hint {
-	color: #666;
+	color: var(--color-text-light);
 	font-size: 0.85rem;
 }
 
@@ -197,7 +197,7 @@ const handleNextClick = () => {
 	background: #f0f0f0;
 	border-radius: 6px;
 	font-size: 0.9rem;
-	color: #333;
+	color: var(--color-text);
 }
 
 .cta-button {
@@ -263,7 +263,7 @@ const handleNextClick = () => {
 .form-title {
 	font-size: 2rem;
 	margin-bottom: 30px;
-	color: #333;
+	color: var(--color-text);
 	text-align: center;
 }
 
@@ -271,7 +271,7 @@ const handleNextClick = () => {
 
 .form-subtitle {
 	text-align: center;
-	color: #555;
+	color: var(--color-text-light);
 	font-size: 1.1rem;
 	margin-bottom: 30px;
 	max-width: 800px;

@@ -48,11 +48,11 @@ defineProps({
 .feature-card h4 {
 	font-size: 1.3rem;
 	margin-bottom: 12px;
-	color: #333;
+	color: var(--color-text);
 }
 
 .feature-card p {
-	color: #666;
+	color: var(--color-text-light);
 	line-height: 1.6;
 }
 </style>

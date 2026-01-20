@@ -124,7 +124,7 @@ const modalClass = computed(() => {
 	background: none;
 	border: none;
 	font-size: 2rem;
-	color: #999;
+	color: var(--color-text-lighter);
 	cursor: pointer;
 	line-height: 1;
 	padding: 0;
@@ -140,7 +140,7 @@ const modalClass = computed(() => {
 
 .modal-close:hover {
 	background: #f0f0f0;
-	color: #333;
+	color: var(--color-text);
 }
 
 /* Scrollbar styling for modal content */

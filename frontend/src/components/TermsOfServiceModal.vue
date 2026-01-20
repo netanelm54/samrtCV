@@ -253,12 +253,12 @@ const lastUpdated = new Date().toLocaleDateString('en-US', {
 
 .terms-title {
 	font-size: 2rem;
-	color: #333;
+	color: var(--color-text);
 	margin-bottom: 10px;
 }
 
 .terms-updated {
-	color: #666;
+	color: var(--color-text-light);
 	font-size: 0.9rem;
 	margin-bottom: 30px;
 	padding-bottom: 20px;
@@ -266,7 +266,7 @@ const lastUpdated = new Date().toLocaleDateString('en-US', {
 }
 
 .terms-content p {
-	color: #333;
+	color: var(--color-text);
 	line-height: 1.8;
 	margin-bottom: 15px;
 }
@@ -277,7 +277,7 @@ const lastUpdated = new Date().toLocaleDateString('en-US', {
 
 .terms-section h2 {
 	font-size: 1.3rem;
-	color: #333;
+	color: var(--color-text);
 	margin-bottom: 15px;
 	margin-top: 25px;
 }
@@ -288,13 +288,13 @@ const lastUpdated = new Date().toLocaleDateString('en-US', {
 }
 
 .terms-section li {
-	color: #333;
+	color: var(--color-text);
 	line-height: 1.8;
 	margin-bottom: 10px;
 }
 
 .terms-section strong {
-	color: #333;
+	color: var(--color-text);
 	font-weight: 600;
 }
 

@@ -218,14 +218,14 @@ const handlePaymentSuccess = () => {
 .pricing-title {
 	font-size: 1.5rem;
 	margin-bottom: 10px;
-	color: #333;
+	color: var(--color-text);
 	text-align: center;
 }
 
 .pricing-subtitle {
 	font-size: 1rem;
 	margin-bottom: 30px;
-	color: #666;
+	color: var(--color-text-light);
 	text-align: center;
 	max-width: 700px;
 	margin-left: auto;
@@ -291,7 +291,7 @@ const handlePaymentSuccess = () => {
 
 .cta-button.secondary {
 	background: #e0e0e0;
-	color: #333;
+	color: var(--color-text);
 }
 
 .cta-button.secondary:hover:not(:disabled) {
@@ -334,7 +334,7 @@ const handlePaymentSuccess = () => {
 	align-items: center;
 	gap: 10px;
 	cursor: pointer;
-	color: #333;
+	color: var(--color-text);
 	font-size: 0.95rem;
 }
 
@@ -371,7 +371,7 @@ const handlePaymentSuccess = () => {
 .email-label {
 	display: block;
 	font-weight: 600;
-	color: #333;
+	color: var(--color-text);
 	font-size: 0.95rem;
 	margin-bottom: 8px;
 }

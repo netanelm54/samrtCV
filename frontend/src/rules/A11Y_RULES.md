@@ -166,7 +166,7 @@ This document outlines accessibility requirements based on WCAG 2.1 Level AA sta
 
 ```vue
 <!-- ✅ Good: High contrast -->
-<p style="color: #333;">Text on white background</p>
+<p style="color: var(--color-text);">Text on white background</p>
 <p style="color: #e0e0e0;">Text on dark background</p>
 
 <!-- ❌ Bad: Low contrast -->

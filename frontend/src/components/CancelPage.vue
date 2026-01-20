@@ -77,13 +77,13 @@ const goHome = () => {
 
 h1 {
 	font-size: 2.5rem;
-	color: #333;
+	color: var(--color-text);
 	margin-bottom: 16px;
 }
 
 p {
 	font-size: 1.1rem;
-	color: #666;
+	color: var(--color-text-light);
 	margin-bottom: 24px;
 }
 

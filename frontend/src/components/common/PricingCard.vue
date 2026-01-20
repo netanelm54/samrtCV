@@ -142,7 +142,7 @@ const badgeClass = computed(() => {
 
 .pricing-header h4 {
 	font-size: 1.5rem;
-	color: #333;
+	color: var(--color-text);
 	margin-bottom: 10px;
 }
 
@@ -156,7 +156,7 @@ const badgeClass = computed(() => {
 .original-price {
 	font-size: 1.2rem;
 	font-weight: 500;
-	color: #999;
+	color: var(--color-text-lighter);
 	text-decoration: line-through;
 	text-decoration-thickness: 2px;
 }
@@ -168,7 +168,7 @@ const badgeClass = computed(() => {
 }
 
 .pricing-description {
-	color: #555;
+	color: var(--color-text-light);
 	margin-bottom: 20px;
 	font-size: 1rem;
 }
@@ -177,7 +177,7 @@ const badgeClass = computed(() => {
 	list-style: none;
 	padding: 0;
 	text-align: left;
-	color: #333;
+	color: var(--color-text);
 }
 
 .pricing-features li {

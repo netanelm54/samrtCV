@@ -42,13 +42,13 @@ const handlePurchase = async () => {
 <style scoped>
 .upsell-title {
 	font-size: 1.8rem;
-	color: #333;
+	color: var(--color-text);
 	margin-bottom: 15px;
 	text-align: center;
 }
 
 .upsell-description {
-	color: #666;
+	color: var(--color-text-light);
 	margin-bottom: 25px;
 	text-align: center;
 	line-height: 1.6;
@@ -62,7 +62,7 @@ const handlePurchase = async () => {
 }
 
 .upsell-feature {
-	color: #333;
+	color: var(--color-text);
 	padding: 8px 0;
 	font-size: 0.95rem;
 }
@@ -94,7 +94,7 @@ const handlePurchase = async () => {
 
 .upsell-button.secondary {
 	background: #e0e0e0;
-	color: #333;
+	color: var(--color-text);
 }
 
 .upsell-button.secondary:hover {

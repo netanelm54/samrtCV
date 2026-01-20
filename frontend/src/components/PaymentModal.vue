@@ -238,7 +238,7 @@ onUnmounted(() => {
 
 .payment-title {
 	font-size: 1.8rem;
-	color: #333;
+	color: var(--color-text);
 	margin-bottom: 20px;
 	text-align: center;
 }
@@ -286,7 +286,7 @@ onUnmounted(() => {
 
 .service-info h4 {
 	margin: 0 0 10px 0;
-	color: #333;
+	color: var(--color-text);
 	font-size: 1.2rem;
 }
 
@@ -326,7 +326,7 @@ onUnmounted(() => {
 
 .payment-button.secondary {
 	background: #e0e0e0;
-	color: #333;
+	color: var(--color-text);
 }
 
 .payment-button.secondary:hover:not(:disabled) {
@@ -356,7 +356,7 @@ onUnmounted(() => {
 .payment-loading {
 	text-align: center;
 	padding: 40px;
-	color: #666;
+	color: var(--color-text-light);
 }
 
 .security-disclaimer {
@@ -380,12 +380,12 @@ onUnmounted(() => {
 
 .security-text {
 	margin: 0;
-	color: #555;
+	color: var(--color-text-light);
 	flex: 1;
 }
 
 .security-text strong {
-	color: #333;
+	color: var(--color-text);
 	font-weight: 600;
 }
 

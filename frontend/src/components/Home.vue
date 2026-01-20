@@ -117,7 +117,7 @@ const features = ref([
 
 .features-intro {
 	text-align: center;
-	color: #666;
+	color: var(--color-text-light);
 	font-size: 1rem;
 	margin-bottom: 30px;
 	max-width: 700px;
@@ -151,7 +151,7 @@ const features = ref([
 	text-align: center;
 	font-size: 2rem;
 	margin-bottom: 40px;
-	color: #333;
+	color: var(--color-text);
 }
 
 .features-grid {
