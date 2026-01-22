@@ -88,7 +88,18 @@ export const analytics = {
 	},
 
 	/**
-	 * 3. Step 2 Start - Plan Selection View
+	 * 3. Preview Continue - User Continues from Preview
+	 * Tracked when user clicks "Get Improved CV" button
+	 */
+	trackPreviewContinue: () => {
+		trackEvent('preview_continue', {
+			step: 'preview_continue',
+			funnel_step: 2.5
+		})
+	},
+
+	/**
+	 * 4. Step 2 Start - Plan Selection View
 	 * Tracked when user reaches pricing step
 	 */
 	trackStep2Start: (data) => {
@@ -100,7 +111,7 @@ export const analytics = {
 	},
 
 	/**
-	 * 4. Payment Initiated - Continue to Payment Clicked
+	 * 5. Payment Initiated - Continue to Payment Clicked
 	 * Tracked when user clicks "Continue to Payment" button
 	 */
 	trackPaymentInitiated: (data) => {
@@ -115,7 +126,7 @@ export const analytics = {
 	},
 
 	/**
-	 * 5. Payment Success - Payment Completed Successfully
+	 * 6. Payment Success - Payment Completed Successfully
 	 * Tracked when payment is verified as successful
 	 */
 	trackPaymentSuccess: (data) => {
@@ -129,7 +140,7 @@ export const analytics = {
 	},
 
 	/**
-	 * 6. File Received - User Successfully Received File
+	 * 7. File Received - User Successfully Received File
 	 * Tracked when file download/processing completes
 	 */
 	trackFileReceived: (data) => {

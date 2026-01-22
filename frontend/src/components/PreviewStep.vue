@@ -48,6 +48,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useCVAnalysisStore } from '../stores/index.js';
+import analytics from '../utils/analytics.js';
 
 const store = useCVAnalysisStore();
 const professionalSummary = ref('');
@@ -80,6 +81,9 @@ const loadPreview = async () => {
 };
 
 const handleContinue = () => {
+	// Track preview continue event
+	analytics.trackPreviewContinue();
+	
 	// Navigate to pricing step
 	store.goToNextStep();
 };
