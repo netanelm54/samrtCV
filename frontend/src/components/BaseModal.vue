@@ -161,4 +161,10 @@ const modalClass = computed(() => {
 .modal-container::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
+
+@media (max-width: 768px) {
+	.modal-container {
+		padding: 20px;
+	}
+}
 </style>

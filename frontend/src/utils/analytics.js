@@ -163,6 +163,13 @@ export const analytics = {
 			funnel_step: step === 1 ? 2 : step === 2 ? 3 : null,
 			data
 		})
+	},
+
+	/**
+	 * Track coupon used
+	 */
+	trackCouponUsed: (data) => {
+		trackEvent('coupon_used', data)
 	}
 }
 

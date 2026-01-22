@@ -35,6 +35,47 @@
 			<span id="email-description" class="sr-only">Enter your email address to receive the CV analysis report</span>
 		</div>
 
+		<div class="coupon-container">
+			<label for="coupon-code" class="coupon-label">
+				Have a coupon code? <span class="coupon-optional">(Optional)</span>
+			</label>
+			<div class="coupon-input-wrapper">
+				<input
+					id="coupon-code"
+					v-model="couponCode"
+					type="text"
+					placeholder="Enter coupon code"
+					class="coupon-input"
+					:class="{ 'coupon-input-valid': couponValidated && couponIsValid, 'coupon-input-invalid': couponValidated && !couponIsValid }"
+					@blur="validateCouponCode"
+					@keyup.enter="validateCouponCode"
+					aria-describedby="coupon-description coupon-status"
+				/>
+				<button
+					type="button"
+					@click="validateCouponCode"
+					class="coupon-button"
+					:disabled="!couponCode.trim() || isValidatingCoupon"
+					aria-label="Validate coupon code"
+				>
+					<span v-if="isValidatingCoupon">...</span>
+					<span v-else-if="couponValidated && couponIsValid">✓</span>
+					<span v-else>Apply</span>
+				</button>
+			</div>
+			<span id="coupon-description" class="sr-only">Enter a coupon code to skip payment and process your CV directly</span>
+			<div 
+				id="coupon-status" 
+				class="coupon-status"
+				role="status"
+				aria-live="polite"
+				v-if="couponValidated"
+			>
+				<span v-if="couponIsValid" class="coupon-success">✓ Coupon code applied! Payment will be skipped.</span>
+				<span v-else-if="couponError" class="coupon-error">{{ couponError }}</span>
+			</div>
+		</div>
+
 		<div class="terms-checkbox-container">
 			<label class="terms-checkbox-label">
 				<input
@@ -65,10 +106,10 @@
 			<button
 				type="button"
 				@click="handleSubmit"
-				:disabled="!canProceed"
+				:disabled="!canProceed || store.isLoading"
 				class="cta-button"
 			>
-				<span v-if="store.isProcessingPayment">Processing...</span>
+				<span v-if="store.isLoading">Processing...</span>
 				<span v-else>Continue to Payment</span>
 			</button>
 		</div>
@@ -97,15 +138,23 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import PricingCard from './common/PricingCard.vue';
 import PaymentModal from './PaymentModal.vue';
 import { useCVAnalysisStore } from '../stores/index.js';
 import { saveFormData } from '../utils/persistence.js';
 import analytics from '../utils/analytics.js';
+import { validateCoupon } from '../api/couponApi.js';
 
+const router = useRouter();
 const store = useCVAnalysisStore();
 const customerEmail = ref('');
 const showPaymentModal = ref(false);
+const couponCode = ref('');
+const couponIsValid = ref(false);
+const couponValidated = ref(false);
+const couponError = ref('');
+const isValidatingCoupon = ref(false);
 
 // Track step 2 start when component mounts
 onMounted(() => {
@@ -119,7 +168,7 @@ const canProceed = computed(() => {
 		   store.termsAccepted && 
 		   customerEmail.value.trim() && 
 		   isValidEmail(customerEmail.value) &&
-		   !store.isProcessingPayment;
+		   !store.isLoading;
 });
 
 const isValidEmail = (email) => {
@@ -163,6 +212,110 @@ const pricingOptions = ref([
 	}
 ]);
 
+const validateCouponCode = async () => {
+	if (!couponCode.value.trim()) {
+		couponValidated.value = false;
+		couponIsValid.value = false;
+		couponError.value = '';
+		return;
+	}
+
+	isValidatingCoupon.value = true;
+	couponError.value = '';
+	couponValidated.value = false;
+
+	try {
+		const result = await validateCoupon(couponCode.value);
+		if (result.valid) {
+			couponIsValid.value = true;
+			couponValidated.value = true;
+			couponError.value = '';
+			store.clearError();
+		} else {
+			couponIsValid.value = false;
+			couponValidated.value = true;
+			couponError.value = result.error || 'Invalid coupon code';
+		}
+	} catch (error) {
+		couponIsValid.value = false;
+		couponValidated.value = true;
+		couponError.value = error.response?.data?.error || error.message || 'Failed to validate coupon code';
+	} finally {
+		isValidatingCoupon.value = false;
+	}
+};
+
+const processWithCoupon = async () => {
+	if (!store.cvFile || !store.role || !store.selectedOption) {
+		store.setError('Missing required information. Please start over.');
+		return;
+	}
+
+	store.clearError();
+
+	try {
+		// Track coupon usage
+		analytics.trackCouponUsed({
+			couponCode: couponCode.value,
+			selectedOption: store.selectedOption,
+			customerEmail: customerEmail.value
+		});
+
+		// Process CV directly based on service option
+		let success = false;
+		switch (store.selectedOption) {
+			case 'analysis':
+				success = await store.analyzeOnly();
+				break;
+			case 'improved':
+				success = await store.improveOnly();
+				break;
+			case 'complete':
+				success = await store.analyzeAndImprove();
+				break;
+			default:
+				throw new Error('Invalid service option');
+		}
+
+		if (success) {
+			// Track success
+			analytics.trackPaymentSuccess({
+				sessionId: 'coupon-' + Date.now(),
+				serviceOption: store.selectedOption,
+				amount: 0,
+				couponCode: couponCode.value
+			});
+
+			// Track file received
+			const fileType = store.selectedOption === 'analysis' ? 'application/pdf' : 'application/zip';
+			const fileName = store.selectedOption === 'analysis' 
+				? `CV-Analysis-Report-${Date.now()}.pdf`
+				: store.selectedOption === 'improved'
+				? `Improved-CV-${Date.now()}.zip`
+				: `CV-Complete-Package-${Date.now()}.zip`;
+			
+			analytics.trackFileReceived({
+				serviceOption: store.selectedOption,
+				fileName: fileName,
+				fileType: fileType,
+				couponCode: couponCode.value
+			});
+
+			// Clear form data
+			store.resetAfterSuccess();
+
+			// Navigate to success page without session_id (coupon flow)
+			router.push('/success?coupon=true');
+		} else {
+			throw new Error('Failed to process CV');
+		}
+	} catch (error) {
+		console.error('Coupon processing error:', error);
+		analytics.trackError(error, { step: 'coupon_processing' });
+		store.setError(error.response?.data?.error || error.message || 'Failed to process CV with coupon');
+	}
+};
+
 const handleSubmit = async () => {
 	if (!canProceed.value) {
 		if (!customerEmail.value.trim()) {
@@ -171,6 +324,24 @@ const handleSubmit = async () => {
 			store.setError('Please enter a valid email address');
 		}
 		return;
+	}
+
+	// If coupon code is valid, skip payment and process directly
+	if (couponCode.value.trim() && couponIsValid.value) {
+		await processWithCoupon();
+		return;
+	}
+
+	// If coupon code is entered but not validated, validate it first
+	if (couponCode.value.trim() && !couponValidated.value) {
+		await validateCouponCode();
+		if (couponIsValid.value) {
+			await processWithCoupon();
+			return;
+		} else {
+			store.setError('Please enter a valid coupon code or remove it to proceed with payment');
+			return;
+		}
 	}
 
 	// Track payment initiated
@@ -402,9 +573,128 @@ const handlePaymentSuccess = () => {
 	outline-offset: 2px;
 }
 
+.coupon-container {
+	margin: 20px 0;
+}
+
+.coupon-label {
+	display: block;
+	font-weight: 600;
+	color: var(--color-text);
+	font-size: 0.95rem;
+	margin-bottom: 8px;
+}
+
+.coupon-optional {
+	font-weight: 400;
+	color: var(--color-text-light);
+	font-size: 0.85rem;
+}
+
+.coupon-input-wrapper {
+	display: flex;
+	gap: 8px;
+	align-items: stretch;
+}
+
+.coupon-input {
+	flex: 1;
+	padding: 12px;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	font-size: 1rem;
+	font-family: inherit;
+	transition: border-color 0.3s, outline 0.2s;
+	min-height: 44px;
+}
+
+.coupon-input:focus {
+	outline: 3px solid var(--color-primary);
+	outline-offset: 2px;
+	border-color: var(--color-primary);
+}
+
+.coupon-input:focus-visible {
+	outline: 3px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+.coupon-input-valid {
+	border-color: var(--color-accent);
+	background-color: #f0fff4;
+}
+
+.coupon-input-invalid {
+	border-color: #e74c3c;
+	background-color: #fff5f5;
+}
+
+.coupon-button {
+	padding: 12px 24px;
+	background: var(--color-primary);
+	color: var(--color-white);
+	border: none;
+	border-radius: 8px;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.3s, transform 0.2s, outline 0.2s;
+	min-height: 44px;
+	min-width: 80px;
+	white-space: nowrap;
+}
+
+.coupon-button:hover:not(:disabled) {
+	background: var(--color-accent);
+	transform: translateY(-1px);
+}
+
+.coupon-button:focus {
+	outline: 3px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+.coupon-button:focus-visible {
+	outline: 3px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+.coupon-button:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.coupon-status {
+	margin-top: 8px;
+	font-size: 0.9rem;
+	min-height: 20px;
+}
+
+.coupon-success {
+	color: var(--color-accent);
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.coupon-error {
+	color: #e74c3c;
+	font-weight: 500;
+}
+
 @media (max-width: 768px) {
 	.pricing-options {
 		grid-template-columns: 1fr;
+	}
+
+	.coupon-input-wrapper {
+		flex-direction: column;
+	}
+
+	.coupon-button {
+		width: 100%;
 	}
 }
 </style>

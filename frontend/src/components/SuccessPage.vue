@@ -186,6 +186,10 @@ onMounted(() => {
 	// Only verify if we have a session_id (from Stripe redirect)
 	if (route.query.session_id) {
 		verifyAndProcess();
+	} else if (route.query.coupon === 'true') {
+		// Coupon flow - CV already processed, just show success
+		isProcessing.value = false;
+		processingComplete.value = true;
 	} else {
 		// If no session_id, just show success message (for non-payment flows)
 		isProcessing.value = false;

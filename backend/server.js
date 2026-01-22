@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 import analysisRoutes from './routes/analysisRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import analyticsRoutes from './routes/analyticsRoutes.js'
+import couponRoutes from './routes/couponRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -73,6 +74,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api', analysisRoutes)
 app.use('/api', paymentRoutes)
 app.use('/api', analyticsRoutes)
+app.use('/api', couponRoutes)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

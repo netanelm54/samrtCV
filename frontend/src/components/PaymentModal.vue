@@ -232,10 +232,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.payment-modal {
-	padding: 20px;
-}
-
 .payment-title {
 	font-size: 1.8rem;
 	color: var(--color-text);
