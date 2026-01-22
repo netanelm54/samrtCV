@@ -130,12 +130,37 @@ export function useApiActions(
     return await improveOnly()
   }
 
+  const getPreviewSummary = async () => {
+    if (!cvFile.value || !role.value.trim()) {
+      if (setError) setError('Please fill in all required fields')
+      return null
+    }
+
+    if (startLoading) startLoading()
+    if (clearError) clearError()
+
+    try {
+      const result = await cvAnalysisApi.getPreviewSummary(
+        cvFile.value,
+        role.value,
+        jobDescription.value
+      )
+      return result
+    } catch (err) {
+      handleApiError(err)
+      return null
+    } finally {
+      if (stopLoading) stopLoading()
+    }
+  }
+
   return {
     analyzeOnly,
     improveOnly,
     analyzeAndImprove,
     processCV,
-    handleUpsellPurchase
+    handleUpsellPurchase,
+    getPreviewSummary
   }
 }
 

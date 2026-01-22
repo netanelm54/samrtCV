@@ -156,7 +156,7 @@ const couponValidated = ref(false);
 const couponError = ref('');
 const isValidatingCoupon = ref(false);
 
-// Track step 2 start when component mounts
+// Track step 3 start when component mounts (PricingStep is now step 3)
 onMounted(() => {
 	analytics.trackStep2Start({
 		selectedOption: store.selectedOption

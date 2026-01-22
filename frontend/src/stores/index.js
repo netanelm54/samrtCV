@@ -86,7 +86,8 @@ export const useCVAnalysisStore = defineStore('cvAnalysis', () => {
     improveOnly,
     analyzeAndImprove,
     processCV,
-    handleUpsellPurchase
+    handleUpsellPurchase,
+    getPreviewSummary
   } = apiActions
 
   // Global computed that depends on multiple states
@@ -180,6 +181,7 @@ export const useCVAnalysisStore = defineStore('cvAnalysis', () => {
     analyzeAndImprove,
     processCV,
     handleUpsellPurchase,
+    getPreviewSummary,
     
     // Reset Actions
     resetForm,

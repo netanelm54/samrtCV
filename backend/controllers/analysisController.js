@@ -193,6 +193,60 @@ class AnalysisController {
       res.status(500).json({ error: error.message })
     }
   }
+
+  /**
+   * Get preview of Professional Summary only (for preview before payment)
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   */
+  async getPreviewSummary(req, res) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: 'CV file is required' })
+      }
+
+      const { role, jobDescription } = req.body
+
+      if (!role) {
+        await fileAccessor.deleteFile(req.file.path)
+        return res.status(400).json({ error: 'Role is required' })
+      }
+
+      // Use job description if provided, otherwise use role as context
+      const analysisContext = jobDescription || `Role: ${role}`
+
+      console.log('Generating preview summary...')
+
+      // Step 1: Analyze CV (needed for improvement)
+      const analysisResult = await cvAnalysisManager.analyzeCV(
+        req.file.path,
+        analysisContext
+      )
+
+      // Step 2: Generate improved CV
+      const improvementResult = await cvImprovementManager.improveCV(
+        analysisResult.originalResumeText,
+        analysisContext,
+        analysisResult.analysis
+      )
+
+      // Step 3: Clean up uploaded file
+      await fileAccessor.deleteFile(req.file.path)
+
+      // Step 4: Return only the professional summary
+      res.json({
+        professional_summary: improvementResult.improvedCVData.professional_summary || ''
+      })
+
+      console.log('Preview summary generated')
+    } catch (error) {
+      console.error('Error generating preview summary:', error)
+      if (req.file) {
+        await fileAccessor.deleteFile(req.file.path)
+      }
+      res.status(500).json({ error: error.message })
+    }
+  }
 }
 
 export default new AnalysisController()

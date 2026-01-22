@@ -9,8 +9,11 @@
 					<!-- Step 1: Upload and Basic Info -->
 					<FormStep v-if="store.currentStep === 1" />
 
-					<!-- Step 2: Choose Service Option -->
-					<PricingStep v-if="store.currentStep === 2" />
+					<!-- Step 2: Preview Professional Summary -->
+					<PreviewStep v-if="store.currentStep === 2" />
+
+					<!-- Step 3: Choose Service Option -->
+					<PricingStep v-if="store.currentStep === 3" />
 				</div>
 
 				<!-- Upsell Modal -->
@@ -46,6 +49,7 @@ import Header from './layout/Header.vue';
 import Footer from './layout/Footer.vue';
 import UpsellModal from './UpsellModal.vue';
 import FormStep from './FormStep.vue';
+import PreviewStep from './PreviewStep.vue';
 import PricingStep from './PricingStep.vue';
 import FeatureCard from './common/FeatureCard.vue';
 import TermsOfServiceModal from './TermsOfServiceModal.vue';

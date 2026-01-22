@@ -123,3 +123,18 @@ export const analyzeAndImproveCV = async (cvFile, role, jobDescription = '') => 
 	}
 }
 
+/**
+ * Get preview of Professional Summary only (for preview before payment)
+ */
+export const getPreviewSummary = async (cvFile, role, jobDescription = '') => {
+	validateFormData(cvFile, role)
+
+	const formData = createFormData(cvFile, role, jobDescription)
+
+	const response = await apiClient.post('/api/preview-summary', formData)
+
+	return {
+		professional_summary: response.data.professional_summary || ''
+	}
+}
+
